@@ -1,0 +1,31 @@
+/* SolutionCard Styles */
+.solution-card {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 30px;
+  margin: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00FF7F;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.solution-card p {
+  font-size: 2rem;
+  color: whitesmoke;
+  text-shadow: 0 0 10px #e7f1d8;
+}
+
+.solution-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #32CD32;
+}
+
+@media (max-width: 600px) {
+  .solution-card {
+    padding: 20px;
+  }
+
+  .solution-card p {
+    font-size: 1em;
+  }
+}

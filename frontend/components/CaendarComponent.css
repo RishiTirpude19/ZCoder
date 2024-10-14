@@ -1,0 +1,127 @@
+/* CalendarComponent.css */
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(180deg, #001a00 0%, #000000 100%);
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+.calendar-container h1 {
+    font-size: 3em;
+    color: #00FF7F;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px #00FF7F;
+    text-align: center;
+}
+
+.react-calendar {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #00FF7F;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 30px;
+}
+
+.react-calendar__navigation button {
+    color: #ADFF2F;
+    min-width: 44px;
+    background: none;
+    font-size: 1.2em;
+    margin-top: 8px;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+    background-color: #006400;
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+.react-calendar__month-view__weekdays {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #ADFF2F;
+    text-shadow: 0 0 10px #ADFF2F;
+}
+
+.react-calendar__tile {
+    background: none;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 10px 0;
+    font-size: 1em;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+    background-color: #006400;
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+.react-calendar__tile--active {
+    background: linear-gradient(45deg, #32CD32, #00FF7F);
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+.react-calendar__tile--now {
+    background: rgba(50, 205, 50, 0.2);
+    border-radius: 10px;
+}
+
+.events {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.event {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid #32CD32;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #00FF7F;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.event h2 {
+    font-size: 2em;
+    color: #00FF7F;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px #00FF7F;
+}
+
+.event p {
+    font-size: 1.2em;
+    color: #ADFF2F;
+    text-shadow: 0 0 10px #ADFF2F;
+}
+
+@media (max-width: 600px) {
+    .calendar-container h1 {
+        font-size: 2em;
+    }
+
+    .event {
+        width: 90%;
+    }
+
+    .event h2 {
+        font-size: 1.5em;
+    }
+
+    .event p {
+        font-size: 1em;
+    }
+}

@@ -1,0 +1,92 @@
+/* Global Styles */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg, #001a00 0%, #000000 100%);
+    background-attachment: fixed;
+    font-family: 'Arial', sans-serif;
+    color: #ffffff;
+    min-height: 100%;
+}
+
+/* Dashboard Page Styles */
+.dashboard-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.add-problem-button {
+    position: fixed;
+    top: 8rem;
+    left: 2rem;
+    background: linear-gradient(45deg, #006400, #32CD32);
+    color: #ffffff;
+    border: 2px solid #32CD32;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.add-problem-button:hover {
+    background: linear-gradient(45deg, #32CD32, #00FF7F);
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #32CD32;
+}
+
+.problems-container {
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.problems-container h1 {
+    font-size: 2em;
+    color: #00FF7F;
+    margin: 0 0 10px 0;
+    text-shadow: 0 0 20px #00FF7F;
+}
+
+.problem-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.problem-list li {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.no-problems {
+    font-size: 1.5em;
+    color: #ADFF2F;
+    margin-top: 50px;
+    text-shadow: 0 0 10px #ADFF2F;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .problems-container h1 {
+        font-size: 2em;
+    }
+
+    .add-problem-button {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+}

@@ -1,0 +1,78 @@
+/* General Styles */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg, #001a00 0%, #000000 100%);
+    background-attachment: fixed;
+    font-family: 'Arial', sans-serif;
+    color: #ffffff;
+    min-height: 100%;
+}
+
+
+.problem-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.problem-list li {
+    margin-bottom: 20px;
+}
+
+/* ProblemCard Styles */
+.problem-card {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #00FF7F;
+    margin: 20px auto;
+    max-width: 100rem;
+}
+
+.problem-card h2 {
+    font-size: 2em;
+    color: #00FF7F;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px #00FF7F;
+}
+
+.problem-card h3 {
+    font-size: 1.5em;
+    color: #ADFF2F;
+    margin-bottom: 10px;
+    text-shadow: 0 0 5px #ADFF2F;
+}
+
+/* No Problems Message */
+.no-problems {
+    font-size: 1.5em;
+    color: #ADFF2F;
+    text-shadow: 0 0 10px #ADFF2F;
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .dashboard h1 {
+        font-size: 2.5em;
+    }
+
+    .dashboard-button {
+        padding: 12px 30px;
+        font-size: 1em;
+    }
+
+    .problem-card {
+        padding: 20px;
+    }
+
+    .problem-card h2 {
+        font-size: 1.5em;
+    }
+
+    .problem-card h3 {
+        font-size: 1.2em;
+    }
+}

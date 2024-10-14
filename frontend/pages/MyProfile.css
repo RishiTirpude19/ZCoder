@@ -1,0 +1,110 @@
+/* Apply the same background, font, and color settings */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #001a00 0%, #000000 100%);
+  background-attachment: fixed;
+  font-family: 'Arial', sans-serif;
+  color: #ffffff;
+  min-height: 100%;
+}
+
+/* Container for the profile page */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Styling for the username heading */
+.profile-container h1 {
+  font-size: 3em;
+  color: #00FF7F;
+  margin-bottom: 30px;
+  text-shadow: 0 0 20px #00FF7F;
+}
+
+/* Styling for the profile information section */
+.profile-info {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00FF7F;
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Styling for paragraphs within profile-info */
+.profile-info p {
+  font-size: 1.2em;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+/* Highlighted text */
+.profile-info strong {
+  color: #ADFF2F;
+  text-shadow: 0 0 10px #ADFF2F;
+}
+
+/* Sections within the profile (Problems, Solutions, Bookmarks) */
+.profile-section {
+  margin-top: 30px;
+  text-align: left;
+}
+
+/* Section headings */
+.profile-section h3 {
+  font-size: 1.5em;
+  color: #00FF7F;
+  text-shadow: 0 0 10px #00FF7F;
+  margin-bottom: 15px;
+}
+
+/* List styling */
+.profile-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* List items */
+.profile-section ul li {
+  background-color: #001a00;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #32CD32;
+  border-radius: 10px;
+  color: #ffffff;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Hover effect on list items */
+.profile-section ul li:hover {
+  background-color: #003300;
+  box-shadow: 0 0 10px #32CD32;
+}
+
+/* Responsive design for mobile devices */
+@media (max-width: 600px) {
+  .profile-container h1 {
+    font-size: 2.5em;
+  }
+
+  .profile-info {
+    padding: 20px;
+  }
+
+  .profile-section h3 {
+    font-size: 1.2em;
+  }
+
+  .profile-section ul li {
+    font-size: 0.9em;
+    padding: 8px;
+  }
+}

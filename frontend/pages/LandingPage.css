@@ -1,0 +1,77 @@
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg, #001a00 0%, #000000 100%);
+    background-attachment: fixed;
+    font-family: 'Arial', sans-serif;
+    color: #ffffff;
+    min-height: 100%;
+}
+
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 4em;
+    color: #00FF7F;
+    margin: 0;
+    text-shadow: 0 0 20px #00FF7F;
+}
+
+.button-container {
+    margin-top: 30px;
+}
+
+.button-container button {
+    background: linear-gradient(45deg, #006400, #32CD32);
+    color: #ffffff;
+    border: 2px solid #32CD32;
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 1em;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.button-container button:hover {
+    background: linear-gradient(45deg, #32CD32, #00FF7F);
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #32CD32;
+}
+
+.slogan {
+    margin-top: 50px;
+}
+
+.slogan p {
+    font-size: 1.5em;
+    color: #ADFF2F;
+    font-style: italic;
+    margin: 0;
+    text-shadow: 0 0 10px #ADFF2F;
+}
+
+@media (max-width: 600px) {
+    .header h1 {
+        font-size: 2.5em;
+    }
+
+    .button-container button {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+
+    .slogan p {
+        font-size: 1.2em;
+    }
+}

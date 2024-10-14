@@ -1,0 +1,97 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #001a00 0%, #000000 100%);
+  background-attachment: fixed;
+  font-family: 'Arial', sans-serif;
+  color: #ffffff;
+  min-height: 100%;
+}
+
+/* Include padding and borders in width and height calculations */
+* {
+  box-sizing: border-box;
+}
+
+.reviews-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.reviews-header {
+  font-size: 2em;
+  color: #00ff7f;
+  margin-bottom: 30px;
+  text-shadow: 0 0 20px #00ff7f;
+}
+
+/* Ensures 3 review boxes per row with equal sizes */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 equal-sized columns */
+  gap: 20px;
+  /* Space between each review box */
+  justify-items: center;
+  align-items: stretch;
+  /* Ensure all boxes have equal height */
+}
+
+.review-box {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid #32cd32;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00ff7f;
+  color: #ffffff;
+  text-align: left;
+  width: 100%;
+  /* Ensure all boxes have equal width */
+  height: 250px;
+  /* Set fixed height */
+  overflow-y: auto;
+  /* Adds vertical scrollbar if content overflows */
+}
+
+.review-user {
+  font-size: 1.5em;
+  color: #adff2f;
+  text-shadow: 0 0 10px #adff2f;
+}
+
+.review-rating {
+  font-size: 1.2em;
+  margin-top: 10px;
+  color: #ffffff;
+}
+
+.review-comment {
+  font-size: 1.1em;
+  margin-top: 10px;
+  color: #adff2f;
+  word-wrap: break-word;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 900px) {
+  .reviews-grid {
+    grid-template-columns: 1fr 1fr;
+    /* 2 columns on smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+    /* 1 column on very small screens */
+  }
+
+  .review-box {
+    padding: 15px;
+  }
+
+  .review-user {
+    font-size: 1.3em;
+  }
+}
