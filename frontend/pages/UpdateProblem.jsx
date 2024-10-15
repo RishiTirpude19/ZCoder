@@ -87,6 +87,12 @@ function UpdateProblem() {
     };
 
     return (
+        <>
+        <div className='btp'>
+                <button onClick={()=>{
+                    navigate(`/problem/${problemId}`)
+                }}>Back to Problem</button>
+            </div>
         <div className="edit-problem-page">
             <div className="header">
                 <h1>Edit Problem</h1>
@@ -142,6 +148,8 @@ function UpdateProblem() {
                 {success && <div className="success-message">{success}</div>}
             </form>
         </div>
+        </>
+        
     );
 }
 

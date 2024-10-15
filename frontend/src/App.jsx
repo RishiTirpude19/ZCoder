@@ -24,6 +24,7 @@ import UpdateSolution from '../pages/UpdateSolution.jsx';
 import MyProfile from '../pages/MyProfile.jsx';
 import UpdateProfile from '../pages/UpdateProfile.jsx';
 import ProblemDiscussion from '../pages/ProblemDiscussion.jsx';
+import Messages from '../pages/Messages.jsx';
 
 const LandingPage = React.lazy(() => import("../pages/LandingPage"));
 const Signin = React.lazy(() => import("../pages/Signin"));
@@ -69,6 +70,17 @@ function App() {
               <PrivateRoute>
                 <HeaderPages>
                   <CalendarComponent/>
+                </HeaderPages>
+              </PrivateRoute>
+                
+            }
+          />
+          <Route
+            path='/messages'
+            element={
+              <PrivateRoute>
+                <HeaderPages>
+                  <Messages/>
                 </HeaderPages>
               </PrivateRoute>
                 

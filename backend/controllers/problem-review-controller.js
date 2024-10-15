@@ -43,3 +43,16 @@ module.exports.showReviews = async(req,res,next)=>{
     next(error);
   }
 }
+
+module.exports.destroyReview = async (req,res,next)=>{
+  try {
+    const reviewId = req.params.reviewId;
+    const probId = req.params.problemId;
+    const probem = await Problem.findByIdAndUpdate(probId , { $pull: {reviews : reviewId}});
+    await probem.save();
+    await Review.findByIdAndDelete(reviewId);
+    res.status(200).json({message : "Review Deleted"});
+  } catch (error) {
+    next(error);
+  }
+}
