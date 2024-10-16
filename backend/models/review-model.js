@@ -23,6 +23,10 @@ const reviewSchema = new Schema({
     solution : {
         type : Schema.Types.ObjectId,
         ref : "Solution",
+    },
+    blog : {
+        type : Schema.Types.ObjectId,
+        ref : "Blog",
     }
 }, {timestamps : true});
 

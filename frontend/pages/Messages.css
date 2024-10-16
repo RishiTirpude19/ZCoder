@@ -23,12 +23,37 @@ html {
   width: 50vb;
 }
 .chats input {
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  box-shadow: 0 0 15px #00FF7F;
-  margin-bottom: 10px;
-  height: 5%;
-  width: 100%;
+  flex: 1;
+    padding: 15px;
+    font-size: 1em;
+    border: 2px solid #32CD32;
+    border-radius: 10px 0 0 10px;
+    outline: none;
+    background-color: #001a00;
+    color: #ffffff;
+}
+
+.chats input::placeholder {
+  color: #ADFF2F;
+}
+
+.chats input:focus {
+  border-color: #00FF7F;
+  box-shadow: 0 0 10px #00FF7F;
+}
+
+.chats button {
+  background: linear-gradient(45deg, #006400, #32CD32);
+  color: #ffffff;
+  border: 1px solid #32CD32;
+  /* padding: 10px 20px; */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 1em;
+  border-radius: 0 10px 10px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
 }
 .chat-box {
   margin: 1%;

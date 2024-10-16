@@ -40,6 +40,12 @@ function Header() {
                     <li>
                         <NavLink to="/myprofile" activeClassName="active">My Profile</NavLink>
                     </li>
+                    <li>
+                        <NavLink to="/blogs" activeClassName="active">Blogs</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/collaborators" activeClassName="active">Hire Collaborator </NavLink>
+                    </li>
                 </ul>
             </nav>
             

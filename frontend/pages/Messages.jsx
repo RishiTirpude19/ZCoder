@@ -4,7 +4,7 @@ function Messages() {
   return (
     <div className='container'>
       <div className='chats'>
-        <input type="text" name="" id="" />
+        <input type="text" name="" id="" placeholder='Search User' />
         <button>Search</button>
         <hr />
       </div>

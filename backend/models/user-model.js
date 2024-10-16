@@ -41,6 +41,12 @@ const userSchema = new Schema({
         ref : "Problem"
         }
     ],
+    blogs: [
+        {
+        type : Schema.Types.ObjectId,
+        ref : "Blog"
+        }
+    ]
 }, {timestamps : true})
 
 const User = mongoose.model("User" , userSchema);

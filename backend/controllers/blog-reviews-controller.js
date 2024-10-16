@@ -1,10 +1,11 @@
+const Blog = require("../models/blog-schema.js");
 const Review = require("../models/review-model.js");
 const Solution = require("../models/solution-model.js");
 
 module.exports.addReview = async(req,res,next)=>{
   try {
-    const solutionId = req.params.solutionId;
-    const solution = await Solution.findById(solutionId);
+    const blogId = req.params.blogId;
+    const blog = await Blog.findById(blogId);
 
     const { rating, comment } = req.body;
     if (!rating || !comment) {
@@ -14,15 +15,15 @@ module.exports.addReview = async(req,res,next)=>{
       rating,
       comment,
       user: req.user._id,
-      solution: solutionId,
+      blog: blogId,
     });
 
     await newReview.save();
-    solution.reviews.push(newReview._id);
-    await solution.save();
+    blog.reviews.push(newReview._id);
+    await blog.save();
     const populatedReview = await Review.findById(newReview._id)
       .populate('user') 
-      .populate('solution');
+      .populate('blog');
     res.status(201).json({ message: 'Review added successfully!', review: populatedReview });
   } catch (error) {
     next(error);
@@ -31,15 +32,15 @@ module.exports.addReview = async(req,res,next)=>{
 
 module.exports.showReviews = async(req,res,next)=>{
   try {
-    const solutionId = req.params.solutionId;
-    const solution = await Solution.findById(solutionId).populate({
+    const blogId = req.params.blogId;
+    const blog = await Blog.findById(blogId).populate({
     path: 'reviews',
     populate: {
     path: 'user', 
     select: 'username' 
     }
   });
-  res.status(201).json(solution);
+  res.status(201).json(blog);
   } catch (error) {
     next(error);
   }
@@ -48,9 +49,9 @@ module.exports.showReviews = async(req,res,next)=>{
 module.exports.destroyReview = async (req,res,next)=>{
   try {
     const reviewId = req.params.reviewId;
-    const solutionId = req.params.solutionId;
-    const solution = await Solution.findByIdAndUpdate(solutionId , { $pull: {reviews : reviewId}});
-    await solution.save();
+    const blogId = req.params.blogId;
+    const blog = await Blog.findByIdAndUpdate(blogId , { $pull: {reviews : reviewId}});
+    await blog.save();
     await Review.findByIdAndDelete(reviewId);
     res.status(200).json({message : "Review Deleted"});
   } catch (error) {

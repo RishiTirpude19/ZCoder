@@ -9,6 +9,7 @@ const problemRouter = require("./routes/problem-route.js");
 const dashboardRouter = require("./routes/dashboard-route.js");
 const userRouter = require("./routes/user-route.js");
 const solutionRouter = require("./routes/solution-route.js");
+const blogRouter = require("./routes/blog-route.js")
 const authMiddleware = require("./middlewares/auth-middelware.js");
 const User = require("./models/user-model.js");
 const { errorHandeler } = require("./utils/error.js");
@@ -80,6 +81,7 @@ app.use("/" , authRouter);
 app.use("/" , problemRouter);
 app.use("/" , dashboardRouter);
 app.use("/" , userRouter);
+app.use("/blogs" , blogRouter);
 app.use("/problem/:problemId" , solutionRouter)
 
 app.use((err , req ,res ,next)=>{
