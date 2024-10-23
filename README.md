@@ -41,24 +41,24 @@ For beginners and those looking to enhance their software development skills, ZC
 
 ## Tech Stack Used:
 
-**FrontEnd:** React , Material UI , Chakara UI , Context API
+**FrontEnd:** JavaScript, React, Material UI, CSS, State management using recoil
 
-**BackEnd:** Node, Express , Socket.io , BcryptJs , JWT , OAuth 2.0
+**BackEnd:** JavaScript, Node, Express, Socket.io, BcryptJs, JWT, OAuth 2.0
 
-**Database:** MongoDb , Mongoose
+**Database:** MongoDb, Mongoose
 
 ## Run Locally:
 
 Clone the project
 
 ```bash
-  git clone https://github.com/RishiTirpude19/Zcoder-New-.git
+  git clone https://github.com/RishiTirpude19/ZCoder.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd Zcoder(New)
+  cd ZCoder
 ```
 
 Install dependencies
@@ -69,7 +69,7 @@ Install dependencies
 Go to the BackEnd directory
 
 ```bash
-  cd BackEnd
+  cd backend
 ```
 
 Install BackEnd dependencies
@@ -78,15 +78,10 @@ Install BackEnd dependencies
   npm install
 ```
 
-Start the server
-
-```bash
-  nodemon index.js
-```
 Go to the FrontEnd directory
 
 ```bash
-  cd FrontEnd
+  cd frontend
 ```
 
 Install FrontEnd dependencies
@@ -95,10 +90,10 @@ Install FrontEnd dependencies
   npm install
 ```
 
-Start the Client side
+Start the aplication from root directory
 
 ```bash
   npm run dev
 ```
-#### The Client side would be Locally Hosted on http://localhost:5173/ with properly intregrated server APIs.
+#### The command will simultaneously start the frontend and the backend on the link http://localhost:5173/ with properly integrated server APIs.
 
