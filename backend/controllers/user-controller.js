@@ -51,3 +51,23 @@ module.exports.getBookmarks = async(req,res,next)=>{
         next(error);
     }
 }
+
+module.exports.addImpLinks = async(req,res,next)=>{
+    try {
+        const {name , link} = req.body;
+        const user = await User.findById(req.user._id)
+        user.importantlinks.push({ name, link });
+        await user.save();
+        res.json({message : "Link added"});
+    } catch (error) {
+        next(error);
+    }
+}
+module.exports.getImpLinks = async(req,res,next)=>{
+    try {
+        const user = await User.findById(req.user._id);
+        res.json({links : user.importantlinks});
+    } catch (error) {
+        next(error);
+    }
+}

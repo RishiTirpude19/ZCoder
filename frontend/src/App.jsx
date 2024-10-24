@@ -25,6 +25,10 @@ import MyProfile from '../pages/MyProfile.jsx';
 import UpdateProfile from '../pages/UpdateProfile.jsx';
 import ProblemDiscussion from '../pages/ProblemDiscussion.jsx';
 import Messages from '../pages/Messages.jsx';
+import Blogs from '../pages/Blogs.jsx';
+import AddBlog from '../pages/AddBlog.jsx';
+import AskAi from '../pages/AskAi.jsx';
+import ImportantLinks from '../pages/ImportantLinks.jsx';
 
 const LandingPage = React.lazy(() => import("../pages/LandingPage"));
 const Signin = React.lazy(() => import("../pages/Signin"));
@@ -76,6 +80,17 @@ function App() {
             }
           />
           <Route
+            path='/importantlinks'
+            element={
+              <PrivateRoute>
+                <HeaderPages>
+                  <ImportantLinks/>
+                </HeaderPages>
+              </PrivateRoute>
+                
+            }
+          />
+          <Route
             path='/messages'
             element={
               <PrivateRoute>
@@ -97,11 +112,41 @@ function App() {
             }
           />
           <Route
+            path='/blogs'
+            element={
+              <PrivateRoute>
+                <HeaderPages>
+                  <Blogs/>
+                </HeaderPages>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/addblog'
+            element={
+              <PrivateRoute>
+                <HeaderPages>
+                  <AddBlog/>
+                </HeaderPages>
+              </PrivateRoute>
+            }
+          />
+          <Route
             path='/myproblems'
             element={
               <PrivateRoute>
                 <HeaderPages>
                   <Myproblems/>
+                </HeaderPages>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/askai'
+            element={
+              <PrivateRoute>
+                <HeaderPages>
+                  <AskAi/>
                 </HeaderPages>
               </PrivateRoute>
             }
@@ -129,7 +174,7 @@ function App() {
             }
           />
           <Route
-            path='/myprofile'
+            path='/myprofile/:userId'
             element={
               <PrivateRoute>
                 <HeaderPages>

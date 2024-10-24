@@ -9,7 +9,8 @@ const problemRouter = require("./routes/problem-route.js");
 const dashboardRouter = require("./routes/dashboard-route.js");
 const userRouter = require("./routes/user-route.js");
 const solutionRouter = require("./routes/solution-route.js");
-const blogRouter = require("./routes/blog-route.js")
+const blogRouter = require("./routes/blog-route.js");
+const askAiRouter = require("./routes/askai-route.js");
 const authMiddleware = require("./middlewares/auth-middelware.js");
 const User = require("./models/user-model.js");
 const { errorHandeler } = require("./utils/error.js");
@@ -54,15 +55,35 @@ app.get("/myprofile/:userId" ,authMiddleware, async (req,res ,next)=>{
 app.put("/myprofile/:userId/updateprofile", authMiddleware, async (req, res, next) => {
     try {
         const userId = req.user._id; 
-        const user_id = req.params.userId;
-        if(userId.toString() !== user_id.toString()){
-            next(errorHandeler(404, "Bad Request , Not authorised to update this profile"));
+        const user_id = req.params.userId; 
+
+        if (userId.toString() !== user_id.toString()) {
+            return next(errorHandeler(403, "Unauthorized: You are not allowed to update this profile."));
         }
-        const { favlanguage, rating, platform } = req.body;
+
+        const { 
+            favlanguage, 
+            rating, 
+            platform, 
+            gitHub, 
+            projectslinks, 
+            skills, 
+            collaborator 
+        } = req.body;
+
+        const updateData = {
+            ...(favlanguage && { favlanguage }),
+            ...(rating && { rating }),
+            ...(platform && { platform }),
+            ...(gitHub && { gitHub }),
+            ...(projectslinks && { projectslinks }),
+            ...(skills && { skills }),
+            ...(typeof collaborator === "boolean" && { collaborator }) // Only update if it's a boolean
+        };
 
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { favlanguage, rating, platform },
+            updateData,
             { new: true } 
         );
 
@@ -77,12 +98,14 @@ app.put("/myprofile/:userId/updateprofile", authMiddleware, async (req, res, nex
 });
 
 
+
 app.use("/" , authRouter);
 app.use("/" , problemRouter);
 app.use("/" , dashboardRouter);
 app.use("/" , userRouter);
 app.use("/blogs" , blogRouter);
 app.use("/problem/:problemId" , solutionRouter)
+app.use("/askai" , askAiRouter);
 
 app.use((err , req ,res ,next)=>{
     const statusCode = err.statusCode || 500;

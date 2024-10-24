@@ -25,6 +25,18 @@ const userSchema = new Schema({
     platform : {
         type : String,
     },
+    gitHub : {
+        type : String,
+    },
+    projectslinks : 
+    [
+        {
+            type : String,
+        }
+    ],
+    skills : [{
+        type : String
+    }],
     problems : [{
         type : Schema.Types.ObjectId,
         ref : "Problem"
@@ -46,7 +58,18 @@ const userSchema = new Schema({
         type : Schema.Types.ObjectId,
         ref : "Blog"
         }
-    ]
+    ],
+    collaborator : {
+        type : Boolean,
+        default : false,
+    },
+    importantlinks: [
+    {
+        name: { type: String, required: true },  // Each field has its own type definition
+        link: { type: String, required: true }
+    }
+],
+
 }, {timestamps : true})
 
 const User = mongoose.model("User" , userSchema);

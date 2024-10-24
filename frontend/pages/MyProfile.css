@@ -89,6 +89,17 @@ html {
   box-shadow: 0 0 10px #32CD32;
 }
 
+.profile-container a {
+  color: #00FF7F;
+    text-decoration: none;
+    font-size: 1.1em;
+    word-break: break-all;
+  }
+
+    .profile-container a:hover {
+      text-decoration: underline;
+    }
+
 /* Responsive design for mobile devices */
 @media (max-width: 600px) {
   .profile-container h1 {

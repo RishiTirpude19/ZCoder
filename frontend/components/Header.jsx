@@ -1,10 +1,11 @@
 import axios from "axios";
-import { NavLink } from "react-router-dom"; // Import NavLink from react-router-dom
+import { NavLink } from "react-router-dom"; 
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
     const navigate = useNavigate();
+    const userId = localStorage.getItem("userId")
 
     async function handleClick() {
         try {
@@ -38,13 +39,19 @@ function Header() {
                         <NavLink to="/contests" activeClassName="active">Contests</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/myprofile" activeClassName="active">My Profile</NavLink>
+                        <NavLink to={`/myprofile/${userId}`} activeClassName="active">My Profile</NavLink>
                     </li>
                     <li>
                         <NavLink to="/blogs" activeClassName="active">Blogs</NavLink>
                     </li>
                     <li>
                         <NavLink to="/collaborators" activeClassName="active">Hire Collaborator </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/askai" activeClassName="active">Ask AI </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/importantlinks" activeClassName="active">Important Links </NavLink>
                     </li>
                 </ul>
             </nav>

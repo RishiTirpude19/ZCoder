@@ -1,0 +1,74 @@
+/* Styling for the entire page and container */
+.body,
+html {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #001a00 0%, #000000 100%);
+  background-attachment: fixed;
+  font-family: 'Arial', sans-serif;
+  color: #ffffff;
+  min-height: 100%;
+}
+
+.important-links {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00FF7F;
+  color: #ffffff;
+  max-width: 800px;
+  margin: 50px auto;
+}
+
+.important-links h3 {
+  font-size: 1.5em;
+  color: #63e41d;
+  text-shadow: 0 0 10px #ADFF2F;
+  margin-top: 20px;
+  text-decoration:underline;
+}
+
+.important-links a {
+  color: #00FF7F;
+  text-decoration: none;
+  font-size: 1.1em;
+  word-break: break-all;
+  padding-left: 6rem;
+}
+
+.important-links a:hover {
+  text-decoration: underline;
+}
+
+.btp button {
+  background: linear-gradient(45deg, #006400, #32CD32);
+  color: #ffffff;
+  border: 2px solid #32CD32;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btp button:hover {
+  background: linear-gradient(45deg, #32CD32, #00FF7F);
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #32CD32;
+}
+
+/* Media Queries for responsive design */
+@media (max-width: 600px) {
+  .important-links {
+    padding: 30px;
+  }
+
+  .important-links h3 {
+    font-size: 1.2em;
+  }
+
+  .btp button {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+}
