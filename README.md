@@ -97,3 +97,6 @@ Start the aplication from root directory
 ```
 #### The command will simultaneously start the frontend and the backend on the link http://localhost:5173/ with properly integrated server APIs.
 
+
+## Screenshots
+![App Screenshot](./assets/screenshot(1).png "App Screenshot")
