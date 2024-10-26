@@ -99,4 +99,4 @@ Start the aplication from root directory
 
 
 ## Screenshots
-![App Screenshot](./assets/Screenshot(1).png "App Screenshot")
+![App Screenshot](./assets/Screenshot%20(1).png "App Screenshot")
