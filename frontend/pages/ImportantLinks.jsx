@@ -11,11 +11,13 @@ function ImportantLinks() {
     async function fetchImpLinks() {
       try {
         const response = await axios.get(`http://localhost:8080/implinks`, { withCredentials: true });
+        console.log(response.data);
         if (Array.isArray(response.data)) {
-          setImpLinks(response.data);
+          setImpLinks(response.data.links);
         }
       } catch (error) {
         setImpLinks([]);
+        console.log(error)
       }
     }
     fetchImpLinks();

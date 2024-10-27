@@ -65,7 +65,7 @@ const userSchema = new Schema({
     },
     importantlinks: [
     {
-        name: { type: String, required: true },  // Each field has its own type definition
+        name: { type: String, required: true }, 
         link: { type: String, required: true }
     }
 ],

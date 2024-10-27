@@ -29,6 +29,7 @@ import Blogs from '../pages/Blogs.jsx';
 import AddBlog from '../pages/AddBlog.jsx';
 import AskAi from '../pages/AskAi.jsx';
 import ImportantLinks from '../pages/ImportantLinks.jsx';
+import AddLink from '../pages/AddLink.jsx';
 
 const LandingPage = React.lazy(() => import("../pages/LandingPage"));
 const Signin = React.lazy(() => import("../pages/Signin"));
@@ -96,6 +97,17 @@ function App() {
               <PrivateRoute>
                 <HeaderPages>
                   <Messages/>
+                </HeaderPages>
+              </PrivateRoute>
+                
+            }
+          />
+          <Route
+            path='importantlink/addlink'
+            element={
+              <PrivateRoute>
+                <HeaderPages>
+                  <AddLink/>
                 </HeaderPages>
               </PrivateRoute>
                 
