@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ImportantLink.css'; // Import the CSS
+import { FaTrash } from 'react-icons/fa'; // Import Font Awesome icon
 
 function ImportantLinks() {
   const [impLinks, setImpLinks] = useState([]);
@@ -11,8 +12,8 @@ function ImportantLinks() {
     async function fetchImpLinks() {
       try {
         const response = await axios.get(`http://localhost:8080/implinks`, { withCredentials: true });
-        console.log(response.data);
-        if (Array.isArray(response.data)) {
+        console.log(response.data.links);
+        if (Array.isArray(response.data.links)) {
           setImpLinks(response.data.links);
         }
       } catch (error) {
@@ -51,7 +52,13 @@ function ImportantLinks() {
       {impLinks.length > 0 ? (
         impLinks.map((link, index) => (
           <div key={index}>
-            <h3>{link.name}</h3>
+            <h3>{link.name} <button 
+                  className="delete-button2" 
+                  onClick={() => handleDelete(review._id)}
+                  title="Delete review"
+                >
+                  <FaTrash /> 
+                </button> </h3>
             <a href={link.link} target="_blank" rel="noopener noreferrer">
               {link.link}
             </a>

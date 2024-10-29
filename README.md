@@ -138,5 +138,9 @@ Start the application from the root directory
 ### Review Page:
 ![App Screenshot](./assets/Screenshot%20(23).png "App Screenshot")
 
+### Update User Profile:
+![App Screenshot](./assets/Screenshot%20(45).png "App Screenshot")
+![App Screenshot](./assets/Screenshot%20(46).png "App Screenshot")
+
 ### Chat Page:
-![App Screenshot](./assets/Screenshot%20(24).png "App Screenshot")
+![App Screenshot](./assets/Screenshot%20(47).png "App Screenshot")
