@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './MyProfile.css'; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-function MyProfile() {
+function Profile() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId");
+  const {userId} = useParams()
 
   useEffect(() => {
     async function fetchUserInfo() {
@@ -26,11 +26,11 @@ function MyProfile() {
 
   return (
     <>
-      <div className='btp'>
+      {/* <div className='btp'>
         <button onClick={() => navigate(`/myprofile/${userId}/updateprofile`)}>
           Update Profile
         </button>
-      </div>
+      </div> */}
       <div className="profile-container">
         <h1>{user.username}'s Profile</h1>
         <div className="profile-info">
@@ -80,4 +80,4 @@ function MyProfile() {
   );
 }
 
-export default MyProfile;
+export default Profile;

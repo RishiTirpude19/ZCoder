@@ -44,13 +44,13 @@ module.exports.removeBookmark = async (req, res, next) => {
 
 module.exports.getBookmarks = async(req,res,next)=>{
     try {
-        const user = await User.findById(req.user._id).populate("otherBookMarkedProblems");
+        const user = await User.findById(req.user._id).populate({path : "otherBookMarkedProblems" , populate : "user"});
         const bookmarkedProblems = user.otherBookMarkedProblems;
         res.json({problems : bookmarkedProblems});
     } catch (error) {
         next(error);
     }
-}
+} 
 
 module.exports.addImpLinks = async(req,res,next)=>{
     try {
@@ -71,3 +71,18 @@ module.exports.getImpLinks = async(req,res,next)=>{
         next(error);
     }
 }
+
+module.exports.searchUser = async (req, res) => {
+    try {
+        const keyword = req.query.search ? {
+            $or: [
+                { username: { $regex: req.query.search, $options: "i" } },
+            ]
+        } : {};
+
+        const users = await User.find(keyword).find({_id:{$ne:req.user._id}}); 
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

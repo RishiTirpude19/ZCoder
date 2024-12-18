@@ -69,6 +69,12 @@ const userSchema = new Schema({
         link: { type: String, required: true }
     }
 ],
+collaborations: [
+    {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'CollaborationRequest'
+    }
+]
 
 }, {timestamps : true})
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 import './ImportantLink.css'; // Import the CSS
 import { FaTrash } from 'react-icons/fa'; // Import Font Awesome icon
 
@@ -12,7 +13,6 @@ function ImportantLinks() {
     async function fetchImpLinks() {
       try {
         const response = await axios.get(`http://localhost:8080/implinks`, { withCredentials: true });
-        console.log(response.data.links);
         if (Array.isArray(response.data.links)) {
           setImpLinks(response.data.links);
         }

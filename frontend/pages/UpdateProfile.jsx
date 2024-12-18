@@ -80,7 +80,7 @@ function UpdateProfile() {
         formData,
         { withCredentials: true }
       );
-      navigate("/myprofile");
+      navigate(`/myprofile/${userId}`);
       setSuccess('Profile updated successfully!');
     } catch (error) {
       setError('Failed to update profile');
@@ -92,7 +92,7 @@ function UpdateProfile() {
   return (
     <>
       <div className='btp'>
-        <button onClick={() => navigate("/myprofile")}>Go back!</button>
+        <button onClick={() => navigate(`/myprofile/${userId}`)}>Go back!</button>
       </div>
       <div className="update-profile-container">
         <h1>Update Your Profile</h1>
@@ -171,8 +171,9 @@ function UpdateProfile() {
             <button type="button" onClick={() => handleAddItem('skills')}>Add Skill</button>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="collaborator">Collaborator</label>
+          <div className="form-group collaborator-group">
+          <label htmlFor="collaborator">Collaborator</label>
+          <div className="toggle-switch">
             <input
               type="checkbox"
               id="collaborator"
@@ -180,7 +181,10 @@ function UpdateProfile() {
               checked={formData.collaborator}
               onChange={(e) => setFormData({ ...formData, collaborator: e.target.checked })}
             />
+            <span className="slider"></span>
           </div>
+        </div>
+
 
           <button type="submit" disabled={loading}>
             {loading ? 'Updating...' : 'Update Profile'}

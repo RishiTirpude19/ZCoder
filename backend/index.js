@@ -11,6 +11,7 @@ const userRouter = require("./routes/user-route.js");
 const solutionRouter = require("./routes/solution-route.js");
 const blogRouter = require("./routes/blog-route.js");
 const askAiRouter = require("./routes/askai-route.js");
+const chatRouter = require("./routes/chatRoute.js");
 const authMiddleware = require("./middlewares/auth-middelware.js");
 const User = require("./models/user-model.js");
 const { errorHandeler } = require("./utils/error.js");
@@ -43,7 +44,7 @@ db.main().catch(err => console.log(err));
 
 app.get("/myprofile/:userId" ,authMiddleware, async (req,res ,next)=>{
     try {
-        const userId = req.user._id;
+        const userId = req.params.userId;
         const user = await User.findById(userId).populate("otherBookMarkedProblems");
         res.status(200).json({user : user});
     } catch (error) {
@@ -106,6 +107,7 @@ app.use("/" , userRouter);
 app.use("/blogs" , blogRouter);
 app.use("/problem/:problemId" , solutionRouter)
 app.use("/askai" , askAiRouter);
+app.use("/chat" , chatRouter);
 
 app.use((err , req ,res ,next)=>{
     const statusCode = err.statusCode || 500;

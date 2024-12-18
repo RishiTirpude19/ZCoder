@@ -30,6 +30,9 @@ import AddBlog from '../pages/AddBlog.jsx';
 import AskAi from '../pages/AskAi.jsx';
 import ImportantLinks from '../pages/ImportantLinks.jsx';
 import AddLink from '../pages/AddLink.jsx';
+import CollaborationRequest from '../pages/CollaborationRequest.jsx';
+import HireCollaboraters from '../pages/HireCollaboraters.jsx';
+import Profile from '../pages/Profile.jsx';
 
 const LandingPage = React.lazy(() => import("../pages/LandingPage"));
 const Signin = React.lazy(() => import("../pages/Signin"));
@@ -64,6 +67,17 @@ function App() {
               <PrivateRoute>
                 <HeaderPages>
                   <Dashboard/>
+                </HeaderPages>
+              </PrivateRoute>
+                
+            }
+          />
+          <Route
+            path='/collaborators'
+            element={
+              <PrivateRoute>
+                <HeaderPages>
+                  <HireCollaboraters/>
                 </HeaderPages>
               </PrivateRoute>
                 
@@ -119,6 +133,16 @@ function App() {
               <PrivateRoute>
                 <HeaderPages>
                   <AddProblem/>
+                </HeaderPages>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/profile/:userId'
+            element={
+              <PrivateRoute>
+                <HeaderPages>
+                  <Profile/>
                 </HeaderPages>
               </PrivateRoute>
             }
@@ -191,6 +215,16 @@ function App() {
               <PrivateRoute>
                 <HeaderPages>
                   <MyProfile/>
+                </HeaderPages>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/:recipientId/collaborator'
+            element={
+              <PrivateRoute>
+                <HeaderPages>
+                  <CollaborationRequest/>
                 </HeaderPages>
               </PrivateRoute>
             }

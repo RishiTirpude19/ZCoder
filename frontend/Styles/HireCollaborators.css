@@ -9,11 +9,11 @@ html {
   min-height: 100%;
 }
 
-.container{
+.container1 {
   display: flex;
 }
 
-.chats {
+.chats1 {
   margin: 1%;
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 15px;
@@ -22,29 +22,29 @@ html {
   height: 83vh;
   width: 50vb;
 }
-.chats input {
-  width: 100%;
-    flex: 1;
-    padding: 15px;
-    font-size: 1em;
-    border: 2px solid #32CD32;
-    /* border-radius: 10px 0 0 10px; */
-    outline: none;
-    background-color: #001a00;
-    color: #ffffff;
+
+.chat-box1 input {
+  width: 94%;
+  flex: 1;
+  padding: 15px;
+  font-size: 1em;
+  border: 2px solid #32CD32;
+  border-radius: 10px 0 0 10px;
+  outline: none;
+  background-color: #001a00;
+  color: #ffffff;
 }
 
-.chats input::placeholder {
+.chat-box1 input::placeholder {
   color: #ADFF2F;
 }
 
-.chats input:focus {
+.chat-box1 input:focus {
   border-color: #00FF7F;
   box-shadow: 0 0 10px #00FF7F;
 }
 
-.chats button {
-  width: 100%;
+.chat-box1 button {
   background: linear-gradient(45deg, #006400, #32CD32);
   color: #ffffff;
   border: 1px solid #32CD32;
@@ -52,21 +52,19 @@ html {
   padding-top: 1rem;
   padding-bottom: 1rem;
   font-size: 1em;
-/* border-radius: 10px 10px 10px 10px; */
+  border-radius: 0 10px 10px 0;
   cursor: pointer;
   transition: all 0.3s ease;
   outline: none;
 }
-.chats .results-list{
-  color: white;
-}
-.chats button:hover{
+
+.chat-box1 button:hover{
   background: linear-gradient(45deg, #32CD32, #00FF7F);
     transform: scale(1.05);
     box-shadow: 0 0 10px #32CD32;
 }
 
-.chat-box {
+.chat-box1 {
   margin: 1%;
   background-color: rgba(0, 0, 0, 0.6);
   width: 100%;
@@ -74,8 +72,4 @@ html {
   box-shadow: 0 0 15px #00FF7F;
   color: #ffffff;
   border-radius: 15px;
-}
-
-.chat-box p {
-  color: #ffffff;
 }

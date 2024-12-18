@@ -2,9 +2,10 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user-model.js");
 const Message = require("../models/message-model.js"); 
+const CollaborationRequest = require("../models/collaborationRequest-schema.js");
 
 module.exports = (io) => {
-    // Middleware for authenticating Socket.IO connections
+    
     io.use(async (socket, next) => {
         try {
             const token = socket.handshake.auth.token;
@@ -80,15 +81,78 @@ module.exports = (io) => {
 
                 // Prepare the message to be broadcasted with 'user' as string
                 const chatMessage = {
-                    user: newMess.user.username, // Convert to string
+                    user: newMess.user.username,
                     text: newMess.text,
                     timestamp: newMess.timestamp,
                 };
 
-                // Emit the message to all users in the room
+                
                 io.to(problemId).emit("message", chatMessage);
             } catch (err) {
                 console.error("Error saving chat message:", err);
+            }
+        });
+        // Handle sending an invite notification
+        socket.on("sendInvite", async (data) => {
+            const { recipientId, projectDetails, paymentOffer } = data;
+
+            try {
+                // Create a new collaboration request in the database
+                const newInvite = new CollaborationRequest({
+                    requester: socket.user._id,
+                    recipient: recipientId,
+                    projectDetails,
+                    paymentOffer,
+                });
+                await newInvite.save();
+
+                // Emit notification to the recipient
+                io.to(recipientId).emit("inviteNotification", {
+                    message: `You received a collaboration invite from ${socket.user.username}`,
+                    projectDetails,
+                    paymentOffer,
+                    inviteId: newInvite._id,
+                });
+            } catch (error) {
+                console.error("Error sending invite:", error);
+            }
+        });
+
+        // Handle accepting an invite
+        socket.on("acceptInvite", async (inviteId) => {
+            try {
+                const invite = await CollaborationRequest.findById(inviteId);
+                if (invite) {
+                    invite.status = 'Accepted';
+                    await invite.save();
+
+                    // Notify the requester that the invite was accepted
+                    io.to(invite.requester.toString()).emit("inviteNotification", {
+                        message: `${socket.user.username} has accepted your collaboration invite!`,
+                        inviteId,
+                    });
+                }
+            } catch (error) {
+                console.error("Error accepting invite:", error);
+            }
+        });
+
+        // Handle declining an invite
+        socket.on("declineInvite", async (inviteId) => {
+            try {
+                const invite = await CollaborationRequest.findById(inviteId);
+                if (invite) {
+                    invite.status = 'Declined';
+                    await invite.save();
+
+                    // Notify the requester that the invite was declined
+                    io.to(invite.requester.toString()).emit("inviteNotification", {
+                        message: `${socket.user.username} has declined your collaboration invite.`,
+                        inviteId,
+                    });
+                }
+            } catch (error) {
+                console.error("Error declining invite:", error);
             }
         });
 

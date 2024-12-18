@@ -71,6 +71,10 @@ html {
 }
 
 .response-container {
+  max-height: 60vh;
+  /* Keeps the container within 60% of viewport height */
+  overflow-y: auto;
+  /* Adds vertical scroll if content exceeds the container height */
   margin-top: 20px;
   padding: 20px;
   border-radius: 15px;
