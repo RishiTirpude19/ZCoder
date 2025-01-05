@@ -1,43 +1,126 @@
 import React, { useEffect, useState } from "react";
 import "./Messages.css";
 import axios from "axios";
+import io from "socket.io-client";
+
+const ENDPOINT = "http://localhost:8080";
+let socket;
+let selectedChatCompare;
 
 function Messages() {
   const loggedUserId = localStorage.getItem("userId");
+  const [socketConnected, setSocketConnected] = useState(false);
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadChats, setLoadChats] = useState([]);
   const [intialChats, setIntialChats] = useState([]);
-  const [refreshChats, setRefreshChats] = useState(false); // State to trigger useEffect
+  const [refreshChats, setRefreshChats] = useState(false);
+  const [selectedChat, setSelectedChat] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState("");
+  const [chatPartner, setChatPartner] = useState(null);
 
-  // Fetch chats when the component mounts or when refreshChats changes
+  // Fetch chats
   useEffect(() => {
     const fetchChats = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/chat`, { withCredentials: true });
-        console.log(response.data.chats);
         setIntialChats(response.data.chats);
-        //setLoadChats(response.data.chats); // Ensure loadChats is updated
       } catch (error) {
         console.error("Error fetching chats:", error);
       }
     };
     fetchChats();
-  }, [refreshChats]); // Add refreshChats as a dependency
+    selectedChatCompare = selectedChat;
+  }, [refreshChats, selectedChat]);
 
-  const handleChat = async (userId) => {
-    console.log(userId);
+  // Socket connection setup
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    socket = io(ENDPOINT, {
+      auth: { token },
+    });
+
+    socket.emit("setup", { _id: loggedUserId });
+
+    socket.on("connected", () => {
+      console.log("Socket connected");
+      setSelectedChat(selectedChatCompare);
+    });
+
+    socket.on("connection", () => {
+      setSocketConnected(true);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const receiveMessageHandler = (message) => {
+      if (!selectedChatCompare || selectedChatCompare._id !== message.chat._id) {
+        // Optionally handle unread messages here
+      } else {
+        setMessages((prev) => [...prev, message]);
+      }
+    };
+
+    socket.on("receive message", (newMessage) => {
+      if (selectedChat?._id === newMessage.chat._id) {
+        setMessages((prev) => [...prev, newMessage]);
+      }
+    });
+
+    return () => {
+      socket.off("receive message", receiveMessageHandler);
+    };
+  }, [selectedChat]);
+
+  // Send message
+  const sendMessage = async (chatId) => {
     try {
-      const response = await axios.post(`http://localhost:8080/chat`, { userId }, { withCredentials: true });
+      const response = await axios.post('http://localhost:8080/message', { chatId, content: message }, { withCredentials: true });
       console.log(response.data);
-      setRefreshChats((prev) => !prev);
+      setMessages((prev) => [...prev, response.data.newMessage]);
+      socket.emit("send message", response.data);
+      handleMessages(chatId);
+      setMessage('');
     } catch (error) {
-      alert(error.message);
       console.log(error);
     }
   };
 
+  // Handle chat selection
+  const handleMessages = async (chatId) => {
+    setLoading(true);
+    try {
+      setSelectedChat(chatId);
+      const response = await axios.get(`http://localhost:8080/message/${chatId}`, { withCredentials: true });
+      setMessages(response.data.messages);
+
+      const chat = intialChats.find(c => c._id === chatId);
+      const otherUser = chat.users.find(user => user._id !== loggedUserId);
+      setChatPartner(otherUser);
+      setLoading(false);
+      socket.emit("join chat", chatId);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      setLoading(false);
+    }
+  };
+
+  // Handle chat creation
+  const handleChat = async (userId) => {
+    try {
+      const response = await axios.post(`http://localhost:8080/chat`, { userId }, { withCredentials: true });
+      setRefreshChats((prev) => !prev);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  // Handle search functionality
   const handleSubmit = async () => {
     if (!search.trim()) {
       alert("Please enter a search query.");
@@ -46,7 +129,6 @@ function Messages() {
     setLoading(true);
     try {
       const response = await axios.get(`http://localhost:8080/searchuser?query=${search}`, { withCredentials: true });
-      console.log(response.data);
       setResults(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -54,6 +136,11 @@ function Messages() {
       setLoading(false);
       setSearch("");
     }
+  };
+
+  const handleChatSelection = (chatId) => {
+    setMessage('');
+    handleMessages(chatId);
   };
 
   return (
@@ -66,7 +153,7 @@ function Messages() {
           onChange={(e) => setSearch(e.target.value)}
         />
         <button onClick={handleSubmit} disabled={loading}>
-          {loading ? "Searching..." : "Search"}
+          Search
         </button>
         <hr />
         {results.length > 0 ? (
@@ -77,34 +164,62 @@ function Messages() {
               </li>
             ))}
           </ul>
+        ) : null}
+      </div>
+      <div className="chats">
+        <h2>Chats</h2>
+        <hr />
+        {intialChats.length > 0 ? (
+          <ul className="results-list">
+            {intialChats.map((chat) => {
+              const otherUser = chat.users.find((user) => user._id !== loggedUserId);
+              return (
+                <li key={chat._id} onClick={() => handleChatSelection(chat._id)}>
+                  {otherUser?.username || "Unknown User"}
+                </li>
+              );
+            })}
+          </ul>
         ) : (
-          <> </>
+          <p>No chats available.</p>
         )}
       </div>
-<div className="chats">
-  {intialChats.length > 0 ? (
-    <ul className="results-list">
-      {intialChats.map((chat) => {
-        const otherUser = chat.users.find((user) => user._id !== loggedUserId);
-        return (
-          <li key={chat._id}>
-            {otherUser?.username || "Unknown User"}
-          </li>
-        );
-      })}
-    </ul>
-  ) : (
-    <p>No chats available.</p>
-  )}
-</div>
       <div className="chat-box">
-        {loadChats && loadChats.length === 0 && <p style={{color:"white"}}>No chats available.</p>}
-        {loadChats && loadChats.length > 0 && (
-          <ul>
-            {loadChats.map((chat) => (
-              <li key={chat._id}>{chat.chatName || "Unnamed Chat"}</li>
-            ))}
-          </ul>
+        {!selectedChat ? (
+          <p>Select a chat to start messaging</p>
+        ) : (
+          <div className="inside-chat-box">
+            <div className="chat-header">
+              <h3>{chatPartner ? chatPartner.username : "Loading..."}</h3>
+            </div>
+            <hr />
+            <div className="display-messages">
+              {messages.length > 0 ? (
+                messages.map((mess) => (
+                  <div
+                    key={mess._id}
+                    className={mess.sender === loggedUserId ? "sent-message" : "received-message"}
+                  >
+                    {mess.content}
+                  </div>
+                ))
+              ) : (
+                <p>No messages yet.</p>
+              )}
+            </div>
+            <div className="input-message-box">
+              <input
+                type="text"
+                placeholder="Type your Message here ..."
+                className="message-box-input"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+              <button className="message-send-button" onClick={() => sendMessage(selectedChat)}>
+                Send
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

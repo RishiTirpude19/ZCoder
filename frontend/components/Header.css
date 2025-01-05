@@ -1,10 +1,16 @@
 /* General styling for the navbar */
 .navbar {
+    position: sticky;
+    /* Make the navbar sticky */
+    top: 0;
+    /* Stick to the top */
+    z-index: 1000;
+    /* Ensure it stays above other elements */
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0);
     box-shadow: 0 0 15px #00FF7F;
     margin-bottom: 1rem;
 }
@@ -31,28 +37,23 @@
     text-shadow: 0 0 10px #ADFF2F;
     transition: color 0.3s ease, border-bottom 0.3s ease;
     border-bottom: 2px solid transparent;
-    /* No underline initially */
 }
 
 .nav-links a:hover {
     color: #00FF7F;
     text-shadow: 0 0 10px #00FF7F;
     border-bottom: 2px solid #00FF7F;
-    /* Underline on hover */
 }
 
-/* Style for active links - Persistent underline */
 .nav-links .active {
     border-bottom: 2px solid #00FF7F;
-    /* Persistent underline when active */
     color: #00FF7F;
 }
 
-/* Logout button styling */
 .logout-button {
-    background: linear-gradient(45deg, #006400, #32CD32);
+    background: linear-gradient(45deg, #bd1007af, #fb3729);
     color: #ffffff;
-    border: 2px solid #32CD32;
+    border: 2px solid #480a01;
     padding: 12px 25px;
     font-size: 1.2em;
     border-radius: 15px;
@@ -62,9 +63,9 @@
 }
 
 .logout-button:hover {
-    background: linear-gradient(45deg, #32CD32, #00FF7F);
+    background: linear-gradient(45deg, #6a1502, #982702);
     transform: scale(1.05);
-    box-shadow: 0 0 10px #32CD32;
+    box-shadow: 0 0 10px #680b06;
 }
 
 /* Responsive styles */
