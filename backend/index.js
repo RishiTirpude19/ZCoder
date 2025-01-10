@@ -31,6 +31,10 @@ app.use(cookieParser());
 db.main().catch(err => console.log(err));
 
 // Profile routes
+app.get("/" , (req, res) => {
+  res.send("Welcome to Zcoder API");
+})
+
 app.get("/myprofile/:userId", authMiddleware, async (req, res, next) => {
   try {
     const userId = req.params.userId;
