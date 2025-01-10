@@ -15,7 +15,7 @@ function MyProblems() {
         async function fetchProblems() {
             try {
                 setLoading(true);
-                const response = await axios.get("http://localhost:8080/myproblems", {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/myproblems`, {
                     withCredentials: true,
                 });
                 setProblems(response.data.problems);

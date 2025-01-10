@@ -22,7 +22,7 @@ function UpdateSolution() {
         const fetchSolution = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:8080/problem/${problemId}/solutions/${solutionId}`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/solutions/${solutionId}`, {
                     withCredentials: true,
                 });
                 setFormData({
@@ -56,7 +56,7 @@ function UpdateSolution() {
         setSuccess(null);
 
         try {
-            const response = await axios.put(`http://localhost:8080/problem/${problemId}/solutions/${solutionId}/updatesolution`, formData, {
+            const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/solutions/${solutionId}/updatesolution`, formData, {
                 withCredentials: true,
             });
             setSuccess(response.data.message);

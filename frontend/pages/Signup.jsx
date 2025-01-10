@@ -32,7 +32,7 @@ function Signup() {
         setError("");
 
         try {
-            const response = await axios.post("http://localhost:8080/signup",
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signup`,
                 { email, password, username },
                 { withCredentials: true }
             );

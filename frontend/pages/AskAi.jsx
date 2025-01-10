@@ -9,7 +9,7 @@ function AskAi() {
     e.preventDefault();
 
     try {
-        const res = await axios.post("http://localhost:8080/askai", { content: message });
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/askai`, { content: message });
         console.log(res.data);
         setResponse(res.data.message);
     } catch (error) {

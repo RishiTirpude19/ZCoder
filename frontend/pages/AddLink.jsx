@@ -30,7 +30,7 @@ function AddLink() {
 
     try {
       const response = await axios.post(
-        'http://localhost:8080/implinks', 
+        `${import.meta.env.VITE_BACKEND_URL}/implinks`, 
         data,
         { withCredentials: true } 
       );

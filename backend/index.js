@@ -20,7 +20,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',  
+  origin: process.env.VITE_FRONTEND_URL,  
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
@@ -102,7 +102,7 @@ const server = app.listen(port, () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.VITE_FRONTEND_URL,
     methods: ["GET", "POST"]
   }
 });

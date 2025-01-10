@@ -11,7 +11,7 @@ function Dashboard() {
   useEffect(() => {
     async function fetchProblems() {
       try {
-        const response = await axios.get('http://localhost:8080/dashboard', {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/dashboard`, {
           withCredentials: true,
         });
         setProblems(response.data);

@@ -31,7 +31,7 @@ function AddSolutionReview() {
         setSuccess(null);
 
         try {
-            const response = await axios.post(`http://localhost:8080/problem/${problemId}/solutions/${solutionId}/addreview`, formData, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/solutions/${solutionId}/addreview`, formData, {
                 withCredentials: true,
             });
             setSuccess(response.data.message);

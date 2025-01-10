@@ -15,7 +15,7 @@ function ProblemDetail() {
     useEffect(() => {   
         async function fetchProblem() {
             try {
-                const response = await axios.get(`http://localhost:8080/problem/${problemId}`, {withCredentials: true});
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}`, {withCredentials: true});
                 
                 setProblem(response.data.problem);
                 
@@ -42,10 +42,10 @@ function ProblemDetail() {
     async function handleBookmark() {
         try {
             if (isBookmarked) {
-                const response = await axios.post(`http://localhost:8080/unbookmark/${problemId}`, {}, { withCredentials: true });
+                const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/unbookmark/${problemId}`, {}, { withCredentials: true });
                 console.log("Removed from bookmark:", response);
             } else {
-                const response = await axios.post(`http://localhost:8080/bookmark/${problemId}`, {}, { withCredentials: true });
+                const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/bookmark/${problemId}`, {}, { withCredentials: true });
                 console.log("Added to bookmark:", response);
             }
             setIsBookmarked(!isBookmarked);
@@ -83,7 +83,7 @@ function ProblemDetail() {
                 </div>
                 <div className='delete'>
                 <button onClick={async () => {
-                    axios.delete(`http://localhost:8080/problem/${problemId}/deleteproblem`, { withCredentials: true });
+                    axios.delete(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/deleteproblem`, { withCredentials: true });
                     console.log("Deleted");
                     navigate(`/dashboard`);
                 }}>Delete Problem</button>

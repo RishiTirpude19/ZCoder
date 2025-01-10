@@ -31,7 +31,7 @@ function UpdateProblem() {
         const fetchProblemDetails = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:8080/problem/${problemId}`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}`, {
                     withCredentials: true,
                 });
                 
@@ -74,7 +74,7 @@ function UpdateProblem() {
         setSuccess(null);
 
         try {
-            const response = await axios.put(`http://localhost:8080/problem/${problemId}/updateproblem`, formData, {
+            const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/updateproblem`, formData, {
                 withCredentials: true,
             });
             setSuccess(response.data.message);

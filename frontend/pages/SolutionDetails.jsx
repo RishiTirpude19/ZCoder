@@ -10,7 +10,7 @@ function SolutionDetails() {
     useEffect(() => {
         async function fetchSolution() {
             try {
-                const response = await axios.get(`http://localhost:8080/problem/${problemId}/solutions/${solutionId}`, { withCredentials: true });
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/solutions/${solutionId}`, { withCredentials: true });
                 setSolution(response.data);
             } catch (error) {
                 console.log(error);
@@ -46,7 +46,7 @@ function SolutionDetails() {
             </div>
             <div className='delete'>
                 <button onClick={async ()=>{
-                    await axios.delete(`http://localhost:8080/problem/${problemId}/solutions/${solutionId}/deletesolution` , {withCredentials :true});
+                    await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/solutions/${solutionId}/deletesolution` , {withCredentials :true});
                     console.log("Deleted Succssesful");
                     navigate(`problem/${problemId}/solutions`);
                 }}>Delete Solution</button>

@@ -14,7 +14,7 @@ function HireCollaboraters() {
             return;
         }
         try {
-          const response = await  axios.get(`http://localhost:8080/searchuser?query=${searchQuery}` , {withCredentials:true});
+          const response = await  axios.get(`${import.meta.env.VITE_BACKEND_URL}/searchuser?query=${searchQuery}` , {withCredentials:true});
           setSearchResults(response.data);
           setSearchQuery("");
         } catch (error) {

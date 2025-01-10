@@ -10,7 +10,7 @@ function Blogs() {
   useEffect(() => {
     async function fetchBlogs() {
       try {
-        const response = await axios.get("http://localhost:8080/blogs", { withCredentials: true });
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/blogs`, { withCredentials: true });
         setBlogs(response.data);
       } catch (error) {
         console.error("Error fetching blogs:", error);

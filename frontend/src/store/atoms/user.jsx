@@ -9,7 +9,7 @@ export const userAtom = atom({
   default : selector({
     key: "userAtomSelector",
     get : async()=>{
-      const respone = await axios.get(`http://localhost:8080/myprofile/${userId}`, {
+      const respone = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/myprofile/${userId}`, {
         withCredentials: true,
       });
       return respone.data;

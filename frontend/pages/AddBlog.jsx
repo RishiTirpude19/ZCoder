@@ -33,7 +33,7 @@ function AddBlog() {
 
     try {
       const response = await axios.post(
-        'http://localhost:8080/blogs/addblog', // Your backend endpoint for adding blogs
+        `${import.meta.env.VITE_BACKEND_URL}/blogs/addblog`, // Your backend endpoint for adding blogs
         formData,
         { withCredentials: true } // If you're using cookies for authentication
       );

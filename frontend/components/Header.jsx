@@ -9,7 +9,7 @@ function Header() {
 
     async function handleClick() {
         try {
-            await axios.post("http://localhost:8080/logout", {}, { withCredentials: true });
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`, {}, { withCredentials: true });
             localStorage.removeItem("token");
             localStorage.removeItem("userId");
             navigate("/");

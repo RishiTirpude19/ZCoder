@@ -24,7 +24,7 @@ function UpdateProfile() {
   useEffect(() => {
     async function fetchUserProfile() {
       try {
-        const response = await axios.get(`http://localhost:8080/myprofile/${userId}`, { withCredentials: true });
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/myprofile/${userId}`, { withCredentials: true });
         const user = response.data.user;
         setFormData({
           favlanguage: user.favlanguage || '',
@@ -76,7 +76,7 @@ function UpdateProfile() {
 
     try {
       await axios.put(
-        `http://localhost:8080/myprofile/${userId}/updateprofile`,
+        `${import.meta.env.VITE_BACKEND_URL}/myprofile/${userId}/updateprofile`,
         formData,
         { withCredentials: true }
       );
