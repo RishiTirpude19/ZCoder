@@ -20,7 +20,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: process.env.VITE_FRONTEND_URL,  
+  origin: "https://z-coder-6nwp.vercel.app",  
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
