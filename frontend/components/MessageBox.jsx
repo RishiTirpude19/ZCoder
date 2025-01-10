@@ -7,7 +7,7 @@ function MessageBox({selectedChat, messages}) {
     try {
       const chatId = selectedChat;
       const content = message;
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/message`, {chatId, content} ,{withCredentials: true});
+      const response = await axios.post(`https://z-coder.vercel.app/message`, {chatId, content} ,{withCredentials: true});
       console.log(response.data);
     } catch (error) {
       console.log(error);

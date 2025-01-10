@@ -13,7 +13,7 @@ function BookMarkProblems() {
     async function fetchProblems() {
       try {
         setLoading(true);
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/bookmarkedproblems`, { withCredentials: true });
+        const response = await axios.get(`https://z-coder.vercel.app/bookmarkedproblems`, { withCredentials: true });
         setLoading(false);
         console.log(response.data.problems);
         setBookMarkProblems(response.data.problems);

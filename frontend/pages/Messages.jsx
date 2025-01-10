@@ -3,7 +3,7 @@ import "./Messages.css";
 import axios from "axios";
 import io from "socket.io-client";
 
-const ENDPOINT = `${import.meta.env.VITE_BACKEND_URL}`;
+const ENDPOINT = `https://z-coder.vercel.app`;
 let socket;
 let selectedChatCompare;
 
@@ -24,7 +24,7 @@ function Messages() {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/chat`, { withCredentials: true });
+        const response = await axios.get(`https://z-coder.vercel.app/chat`, { withCredentials: true });
         setIntialChats(response.data.chats);
       } catch (error) {
         console.error("Error fetching chats:", error);
@@ -80,7 +80,7 @@ function Messages() {
   // Send message
   const sendMessage = async (chatId) => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/message`, { chatId, content: message }, { withCredentials: true });
+      const response = await axios.post(`https://z-coder.vercel.app/message`, { chatId, content: message }, { withCredentials: true });
       console.log(response.data);
       setMessages((prev) => [...prev, response.data.newMessage]);
       socket.emit("send message", response.data);
@@ -96,7 +96,7 @@ function Messages() {
     setLoading(true);
     try {
       setSelectedChat(chatId);
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/message/${chatId}`, { withCredentials: true });
+      const response = await axios.get(`https://z-coder.vercel.app/message/${chatId}`, { withCredentials: true });
       setMessages(response.data.messages);
 
       const chat = intialChats.find(c => c._id === chatId);
@@ -113,7 +113,7 @@ function Messages() {
   // Handle chat creation
   const handleChat = async (userId) => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/chat`, { userId }, { withCredentials: true });
+      const response = await axios.post(`https://z-coder.vercel.app/chat`, { userId }, { withCredentials: true });
       setRefreshChats((prev) => !prev);
     } catch (error) {
       alert(error.message);
@@ -128,7 +128,7 @@ function Messages() {
     }
     setLoading(true);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/searchuser?query=${search}`, { withCredentials: true });
+      const response = await axios.get(`https://z-coder.vercel.app/searchuser?query=${search}`, { withCredentials: true });
       setResults(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);

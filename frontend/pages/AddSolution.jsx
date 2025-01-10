@@ -33,7 +33,7 @@ function AddSolution() {
         setSuccess(null);
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/addsolution`, formData, {
+            const response = await axios.post(`https://z-coder.vercel.app/problem/${problemId}/addsolution`, formData, {
                 withCredentials: true,
             });
             setSuccess(response.data.message);

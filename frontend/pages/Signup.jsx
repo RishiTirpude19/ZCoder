@@ -32,7 +32,7 @@ function Signup() {
         setError("");
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signup`,
+            const response = await axios.post(`https://z-coder.vercel.app/signup`,
                 { email, password, username },
                 { withCredentials: true }
             );

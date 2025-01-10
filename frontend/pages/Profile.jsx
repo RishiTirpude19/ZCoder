@@ -11,7 +11,7 @@ function Profile() {
   useEffect(() => {
     async function fetchUserInfo() {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/myprofile/${userId}`, { withCredentials: true });
+        const response = await axios.get(`https://z-coder.vercel.app/myprofile/${userId}`, { withCredentials: true });
         setUser(response.data.user);
       } catch (error) {
         console.log(error);

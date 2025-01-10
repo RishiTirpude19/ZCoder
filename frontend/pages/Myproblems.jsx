@@ -15,7 +15,7 @@ function MyProblems() {
         async function fetchProblems() {
             try {
                 setLoading(true);
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/myproblems`, {
+                const response = await axios.get(`https://z-coder.vercel.app/myproblems`, {
                     withCredentials: true,
                 });
                 setProblems(response.data.problems);

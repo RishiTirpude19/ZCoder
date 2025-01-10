@@ -25,7 +25,7 @@ function ProblemDiscussion() {
                     return;
                 }
 
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/myprofile/${userId}`, { withCredentials: true });
+                const response = await axios.get(`https://z-coder.vercel.app/myprofile/${userId}`, { withCredentials: true });
                 setUser(response.data.user);
             } catch (error) {
                 console.error("Error fetching user info:", error);
@@ -46,7 +46,7 @@ function ProblemDiscussion() {
         }
 
         
-        socketRef.current = io(`${import.meta.env.VITE_BACKEND_URL}`, {
+        socketRef.current = io(`https://z-coder.vercel.app`, {
             auth: { token },
             withCredentials: true, 
         });

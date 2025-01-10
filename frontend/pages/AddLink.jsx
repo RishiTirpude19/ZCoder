@@ -30,7 +30,7 @@ function AddLink() {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/implinks`, 
+        `https://z-coder.vercel.app/implinks`, 
         data,
         { withCredentials: true } 
       );

@@ -12,7 +12,7 @@ function ImportantLinks() {
   useEffect(() => {
     async function fetchImpLinks() {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/implinks`, { withCredentials: true });
+        const response = await axios.get(`https://z-coder.vercel.app/implinks`, { withCredentials: true });
         if (Array.isArray(response.data.links)) {
           setImpLinks(response.data.links);
         }

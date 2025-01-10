@@ -9,7 +9,7 @@ function Header() {
 
     async function handleClick() {
         try {
-            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`, {}, { withCredentials: true });
+            await axios.post(`https://z-coder.vercel.app/logout`, {}, { withCredentials: true });
             localStorage.removeItem("token");
             localStorage.removeItem("userId");
             navigate("/");
