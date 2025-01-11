@@ -20,7 +20,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "https://z-coder-6nwp.vercel.app",  
+  origin: ['https://z-coder-6nwp.vercel.app', 'https://z-coder.vercel.app'],  
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
@@ -106,7 +106,7 @@ const server = app.listen(port, () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: process.env.VITE_FRONTEND_URL,
+    origin: ['https://z-coder-6nwp.vercel.app', 'https://z-coder.vercel.app'],
     methods: ["GET", "POST"]
   }
 });

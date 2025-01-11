@@ -20,7 +20,8 @@ module.exports.signup = async (req, res, next) => {
         console.log(user);
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
         const { password: savedPassword, ...rest } = user._doc;
-        res.cookie("token", token, { httpOnly: true }).status(200).json({ ...rest, token });
+        res.cookie("token", token, {  httpOnly: true,
+    secure: true, sameSite: 'none'}).status(200).json({ ...rest, token });
     } catch (error) {
         next(error);
     }
@@ -42,7 +43,7 @@ module.exports.signin = async (req,res,next)=>{
         }
         const token = jwt.sign({id: validUser._id }, JWT_SECRET, { expiresIn: '1h' });
         const {password : hashPassword , ...rest} = validUser._doc;
-        res.cookie("token" , token , {httpOnly :true}).status(200).json({...rest , token});
+        res.cookie("token" , token , {httpOnly :true , secure: true, sameSite: 'none'}).status(200).json({...rest , token});
     } catch (error) {
         next(error);
     }
