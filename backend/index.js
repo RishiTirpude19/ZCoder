@@ -1,7 +1,8 @@
+const db = require("./db");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
-const db = require("./db");
+
 const cors = require('cors');
 const authRouter = require("./routes/auth-route");
 
@@ -17,8 +18,6 @@ const authMiddleware = require("./middlewares/auth-middelware.js");
 const User = require("./models/user-model.js");
 const { errorHandeler } = require("./utils/error.js");
 dotenv.config();
-
-
 
 const app = express();
 
