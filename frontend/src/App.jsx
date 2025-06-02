@@ -33,6 +33,7 @@ import AddLink from '../pages/AddLink.jsx';
 import CollaborationRequest from '../pages/CollaborationRequest.jsx';
 import HireCollaboraters from '../pages/HireCollaboraters.jsx';
 import Profile from '../pages/Profile.jsx';
+import { Loader2 } from "lucide-react";
 
 const LandingPage = React.lazy(() => import("../pages/LandingPage"));
 const Signin = React.lazy(() => import("../pages/Signin"));
@@ -40,7 +41,13 @@ const Signin = React.lazy(() => import("../pages/Signin"));
 function App() {
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="flex justify-center items-center h-screen">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          </div>
+        }
+      >
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route
