@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProblemCard from '../components/ProblemCard';
-import "./Dashboard.css";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -11,7 +10,7 @@ function Dashboard() {
   useEffect(() => {
     async function fetchProblems() {
       try {
-        const response = await axios.get(`https://z-coder.vercel.app/dashboard`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/dashboard`, {
           withCredentials: true,
         });
         setProblems(response.data);
@@ -22,41 +21,46 @@ function Dashboard() {
     fetchProblems();
   }, []);
 
-  // Function to handle card click and navigate
   const handleCardClick = (problemId) => {
     navigate(`/problem/${problemId}`);
   };
 
   return (
-    <div className="dashboard-page">
-      <button
-        className="add-problem-button"
-        onClick={() => {
-          navigate('/addproblem');
-        }}
-      >
-        Add Problem
-      </button>
-      <div className="problems-container">
-        <h1>Dashboard Problems:</h1>
+    <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-[#D8B4FE] via-[#C084FC] to-[#818CF8] p-6">
+      <div className="bg-white/20 backdrop-blur-md w-full max-w-6xl rounded-2xl shadow-2xl p-8 text-white">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
+          <h1 className="text-4xl font-semibold text-center sm:text-left mb-4 sm:mb-0 select-none cursor-default">Dashboard Problems</h1>
+          <button
+            className="bg-violet-600 hover:bg-violet-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300 select-none cursor-default"
+            onClick={() => navigate('/addproblem')}
+          >
+            + Add Problem
+          </button>
+        </div>
+
         {problems.length > 0 ? (
-          <ul className="problem-list">
-            {problems.map((problem) => (
-              <li key={problem._id}>
-                <ProblemCard
-                  user={problem.user.username}
-                  choice={""}
-                  title={problem.title}
-                  platform={problem.platform.name}
-                  rating={problem.platform.rating}
-                  onClick={() => handleCardClick(problem._id)} // Pass the click handler
-                />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="no-problems">No Problems yet...</div>
-        )}
+  <div className="flex flex-col space-y-4 w-full max-w-4xl mx-auto">
+    {problems.map((problem) => (
+      <div
+        key={problem._id}
+        onClick={() => handleCardClick(problem._id)}
+        className="cursor-pointer transform hover:scale-[1.02] transition-transform"
+      >
+        <ProblemCard
+          user={problem.user.username}
+          choice={""}
+          title={problem.title}
+          platform={problem.platform.name}
+          rating={problem.platform.rating}
+        />
+      </div>
+    ))}
+  </div>
+) : (
+  <div className="text-center text-white/90 italic mt-20">
+    No Problems yet...
+  </div>
+)}
       </div>
     </div>
   );

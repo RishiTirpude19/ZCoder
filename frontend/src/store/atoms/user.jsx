@@ -9,7 +9,7 @@ export const userAtom = atom({
   default : selector({
     key: "userAtomSelector",
     get : async()=>{
-      const respone = await axios.get(`https://z-coder.vercel.app/myprofile/${userId}`, {
+      const respone = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/myprofile/${userId}`, {
         withCredentials: true,
       });
       return respone.data;

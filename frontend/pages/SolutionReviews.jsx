@@ -12,7 +12,7 @@ function SolutionReviews() {
     useEffect(() => {
     async function fetchReviews() {
       try {
-        const response = await axios.get(`https://z-coder.vercel.app/problem/${problemId}/solutions/${solutionId}/reviews`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/solutions/${solutionId}/reviews`, {
           withCredentials: true,
         });
         setReviews(response.data.reviews);

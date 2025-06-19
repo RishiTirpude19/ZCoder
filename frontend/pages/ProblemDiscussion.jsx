@@ -46,7 +46,7 @@ function ProblemDiscussion() {
         }
 
         
-        socketRef.current = io(`https://z-coder.vercel.app`, {
+        socketRef.current = io(`${import.meta.env.VITE_BACKEND_URL}`, {
             auth: { token },
             withCredentials: true, 
         });

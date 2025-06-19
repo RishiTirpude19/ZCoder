@@ -14,7 +14,7 @@ function ProblemReviews() {
   useEffect(() => {
     async function fetchReviews() {
       try {
-        const response = await axios.get(`https://z-coder.vercel.app/problem/${problemId}/reviews`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/reviews`, {
           withCredentials: true,
         });
         console.log(currUser);
@@ -31,7 +31,7 @@ function ProblemReviews() {
 
   async function handleDelete(reviewId) {
     try {
-      await axios.delete(`https://z-coder.vercel.app/problem/${problemId}/reviews/${reviewId}`, { withCredentials: true });
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/reviews/${reviewId}`, { withCredentials: true });
       setReviews(reviews.filter(review => review._id !== reviewId));
     } catch (error) {
       console.log(error);

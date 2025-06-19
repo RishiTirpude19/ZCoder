@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./Messages.css";
+
 import axios from "axios";
 import io from "socket.io-client";
 
-const ENDPOINT = `https://z-coder.vercel.app`;
+const ENDPOINT = `${import.meta.env.VITE_BACKEND_URL}`;
 let socket;
 let selectedChatCompare;
 
@@ -24,7 +24,7 @@ function Messages() {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get(`https://z-coder.vercel.app/chat`, { withCredentials: true });
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/chat`, { withCredentials: true });
         setIntialChats(response.data.chats);
       } catch (error) {
         console.error("Error fetching chats:", error);
@@ -80,7 +80,7 @@ function Messages() {
   // Send message
   const sendMessage = async (chatId) => {
     try {
-      const response = await axios.post(`https://z-coder.vercel.app/message`, { chatId, content: message }, { withCredentials: true });
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/message`, { chatId, content: message }, { withCredentials: true });
       console.log(response.data);
       setMessages((prev) => [...prev, response.data.newMessage]);
       socket.emit("send message", response.data);
@@ -96,7 +96,7 @@ function Messages() {
     setLoading(true);
     try {
       setSelectedChat(chatId);
-      const response = await axios.get(`https://z-coder.vercel.app/message/${chatId}`, { withCredentials: true });
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/message/${chatId}`, { withCredentials: true });
       setMessages(response.data.messages);
 
       const chat = intialChats.find(c => c._id === chatId);
@@ -113,7 +113,7 @@ function Messages() {
   // Handle chat creation
   const handleChat = async (userId) => {
     try {
-      const response = await axios.post(`https://z-coder.vercel.app/chat`, { userId }, { withCredentials: true });
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/chat`, { userId }, { withCredentials: true });
       setRefreshChats((prev) => !prev);
     } catch (error) {
       alert(error.message);
@@ -128,7 +128,7 @@ function Messages() {
     }
     setLoading(true);
     try {
-      const response = await axios.get(`https://z-coder.vercel.app/searchuser?query=${search}`, { withCredentials: true });
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/searchuser?query=${search}`, { withCredentials: true });
       setResults(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -144,86 +144,127 @@ function Messages() {
   };
 
   return (
-    <div className="container">
-      <div className="chats">
-        <input
-          type="text"
-          placeholder="Search User"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button onClick={handleSubmit} disabled={loading}>
-          Search
-        </button>
-        <hr />
-        {results.length > 0 ? (
-          <ul className="results-list">
-            {results.map((user) => (
-              <li key={user._id} onClick={() => handleChat(user._id)}>
-                {user.username}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-      <div className="chats">
-        <h2>Chats</h2>
-        <hr />
-        {intialChats.length > 0 ? (
-          <ul className="results-list">
-            {intialChats.map((chat) => {
-              const otherUser = chat.users.find((user) => user._id !== loggedUserId);
-              return (
-                <li key={chat._id} onClick={() => handleChatSelection(chat._id)}>
-                  {otherUser?.username || "Unknown User"}
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p>No chats available.</p>
-        )}
-      </div>
-      <div className="chat-box">
-        {!selectedChat ? (
-          <p>Select a chat to start messaging</p>
-        ) : (
-          <div className="inside-chat-box">
-            <div className="chat-header">
-              <h3>{chatPartner ? chatPartner.username : "Loading..."}</h3>
-            </div>
-            <hr />
-            <div className="display-messages">
-              {messages.length > 0 ? (
-                messages.map((mess) => (
-                  <div
-                    key={mess._id}
-                    className={mess.sender === loggedUserId ? "sent-message" : "received-message"}
+    <div className="min-h-screen bg-gradient-to-br from-[#D8B4FE] via-[#C084FC] to-[#818CF8] p-4 text-white font-sans ">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+        
+        {/* Sidebar: Search + Chat List */}
+        <div className="md:col-span-1 space-y-6">
+          {/* Search */}
+          <div className="bg-white/20 backdrop-blur-md p-4 rounded-2xl shadow-lg">
+            <input
+              type="text"
+              placeholder="Search User"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full p-2 rounded-md bg-white/70 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+            />
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="mt-2 w-full bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded-md transition disabled:opacity-50"
+            >
+              Search
+            </button>
+  
+            {results.length > 0 && (
+              <ul className="mt-4 space-y-2">
+                {results.map((user) => (
+                  <li
+                    key={user._id}
+                    onClick={() => handleChat(user._id)}
+                    className="bg-white/30 p-2 rounded-md hover:bg-white/40 cursor-pointer"
                   >
-                    {mess.content}
-                  </div>
-                ))
-              ) : (
-                <p>No messages yet.</p>
-              )}
-            </div>
-            <div className="input-message-box">
-              <input
-                type="text"
-                placeholder="Type your Message here ..."
-                className="message-box-input"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-              <button className="message-send-button" onClick={() => sendMessage(selectedChat)}>
-                Send
-              </button>
-            </div>
+                    {user.username}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-        )}
+  
+          {/* Chat List */}
+          <div className="bg-white/20 backdrop-blur-md p-4 rounded-2xl shadow-lg">
+            <h2 className="text-xl font-semibold mb-2">Chats</h2>
+            <hr className="border-white/30 mb-3" />
+            <ul className="space-y-2">
+              {intialChats.length > 0 ? (
+                intialChats.map((chat) => {
+                  const otherUser = chat.users.find((user) => user._id !== loggedUserId);
+                  return (
+                    <li
+                      key={chat._id}
+                      onClick={() => handleChatSelection(chat._id)}
+                      className={`bg-white/30 p-2 rounded-md cursor-pointer hover:bg-white/40 ${
+                        selectedChat === chat._id ? "ring-2 ring-violet-400" : ""
+                      }`}
+                    >
+                      {otherUser?.username || "Unknown User"}
+                    </li>
+                  );
+                })
+              ) : (
+                <p className="text-sm text-white/80">No chats available.</p>
+              )}
+            </ul>
+          </div>
+        </div>
+  
+        {/* Chat Box */}
+        <div className="md:col-span-3">
+          <div className="bg-white/20 backdrop-blur-md p-6 rounded-2xl shadow-xl min-h-[500px] flex flex-col">
+            {!selectedChat ? (
+              <p className="text-center text-white/70 text-lg mt-20">Select a chat to start messaging</p>
+            ) : (
+              <>
+                <div className="chat-header mb-4">
+                  <h3 className="text-2xl font-semibold">{chatPartner ? chatPartner.username : "Loading..."}</h3>
+                </div>
+                <hr className="border-white/30 mb-4" />
+  
+                {/* Messages */}
+                <div className="overflow-y-auto space-y-3 mb-4 pr-2 h-[400px] scrollbar-thin scrollbar-thumb-violet-500/80 scrollbar-track-white/20 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+
+                  {messages.length > 0 ? (
+                    messages.map((mess) => (
+                      <div
+                        key={mess._id}
+                        className={`max-w-[70%] p-3 rounded-xl text-sm break-words ${
+                          mess.sender === loggedUserId
+                            ? "bg-violet-600 ml-auto text-white"
+                            : "bg-white/40 text-black"
+                        }`}
+                      >
+                        {mess.content}
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-white/70">No messages yet.</p>
+                  )}
+                </div>
+  
+                {/* Message Input */}
+                <div className="flex gap-2 mt-auto">
+                  <input
+                    type="text"
+                    placeholder="Type your message..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="flex-1 p-2 rounded-md bg-white/80 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-400"
+                  />
+                  <button
+                    onClick={() => sendMessage(selectedChat)}
+                    className="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-md transition"
+                  >
+                    Send
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
+  
 }
 
 export default Messages;

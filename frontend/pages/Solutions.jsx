@@ -13,7 +13,7 @@ function Solutions() {
   useEffect(()=>{
     async function fetchSolutions() {
       try {
-      const response = await axios.get(`https://z-coder.vercel.app/problem/${problemId}/solutions` , {withCredentials : true});
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/problem/${problemId}/solutions` , {withCredentials : true});
       setSolutions(response.data.solutions);
       setProblem(response.data.problem)
       } catch (error) {
