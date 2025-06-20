@@ -226,15 +226,16 @@ function Messages() {
                   {messages.length > 0 ? (
                     messages.map((mess) => (
                       <div
-                        key={mess._id}
-                        className={`max-w-[70%] p-3 rounded-xl text-sm break-words ${
-                          mess.sender === loggedUserId
-                            ? "bg-violet-600 ml-auto text-white"
-                            : "bg-white/40 text-black"
-                        }`}
-                      >
-                        {mess.content}
-                      </div>
+  key={mess._id}
+  className={`w-fit max-w-[60%] p-3 px-4 rounded-2xl text-sm break-words shadow-md ${
+    mess.sender === loggedUserId
+      ? "bg-gradient-to-r from-violet-600 to-indigo-600 ml-auto text-white"
+      : "bg-white/80 text-black"
+  }`}
+>
+  {mess.content}
+</div>
+
                     ))
                   ) : (
                     <p className="text-white/70">No messages yet.</p>

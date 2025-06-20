@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import "./UpdateProfile.css";
 
 function UpdateProfile() {
   const [formData, setFormData] = useState({
@@ -13,6 +12,7 @@ function UpdateProfile() {
     skills: [''],
     collaborator: false,
   });
+
   const navigate = useNavigate();
   const { userId } = useParams();
 
@@ -20,11 +20,12 @@ function UpdateProfile() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  // Fetch user profile on component mount
   useEffect(() => {
     async function fetchUserProfile() {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/myprofile/${userId}`, { withCredentials: true });
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/myprofile/${userId}`, {
+          withCredentials: true,
+        });
         const user = response.data.user;
         setFormData({
           favlanguage: user.favlanguage || '',
@@ -35,7 +36,7 @@ function UpdateProfile() {
           skills: user.skills || [''],
           collaborator: user.collaborator || false,
         });
-      } catch (error) {
+      } catch {
         setError('Failed to fetch user data');
       }
     }
@@ -45,27 +46,27 @@ function UpdateProfile() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const handleArrayChange = (index, e) => {
     const { name, value } = e.target;
     const updatedArray = [...formData[name]];
     updatedArray[index] = value;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: updatedArray,
-    });
+    }));
   };
 
   const handleAddItem = (name) => {
-    setFormData({
-      ...formData,
-      [name]: [...formData[name], ''],
-    });
+    setFormData((prev) => ({
+      ...prev,
+      [name]: [...prev[name], ''],
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -82,7 +83,7 @@ function UpdateProfile() {
       );
       navigate(`/myprofile/${userId}`);
       setSuccess('Profile updated successfully!');
-    } catch (error) {
+    } catch {
       setError('Failed to update profile');
     } finally {
       setLoading(false);
@@ -90,108 +91,140 @@ function UpdateProfile() {
   };
 
   return (
-    <>
-      <div className='btp'>
-        <button onClick={() => navigate(`/myprofile/${userId}`)}>Go back!</button>
-      </div>
-      <div className="update-profile-container">
-        <h1>Update Your Profile</h1>
-        {error && <div className="error-message">{error}</div>}
-        {success && <div className="success-message">{success}</div>}
-        <form className="update-profile-form" onSubmit={handleSubmit}>
-          {/* Existing Fields */}
-          <div className="form-group">
-            <label htmlFor="favlanguage">Favorite Language</label>
-            <input
-              type="text"
-              id="favlanguage"
-              name="favlanguage"
-              value={formData.favlanguage}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="rating">Rating</label>
-            <input
-              type="number"
-              id="rating"
-              name="rating"
-              value={formData.rating}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="platform">Platform</label>
-            <input
-              type="text"
-              id="platform"
-              name="platform"
-              value={formData.platform}
-              onChange={handleChange}
-            />
-          </div>
-
-          {/* New Fields */}
-          <div className="form-group">
-            <label htmlFor="gitHub">GitHub</label>
-            <input
-              type="text"
-              id="gitHub"
-              name="gitHub"
-              value={formData.gitHub}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Projects Links</label>
-            {formData.projectslinks.map((link, index) => (
-              <input
-                key={index}
-                type="text"
-                name="projectslinks"
-                value={link}
-                onChange={(e) => handleArrayChange(index, e)}
-              />
-            ))}
-            <button type="button" onClick={() => handleAddItem('projectslinks')}>Add Project Link</button>
-          </div>
-
-          <div className="form-group">
-            <label>Skills</label>
-            {formData.skills.map((skill, index) => (
-              <input
-                key={index}
-                type="text"
-                name="skills"
-                value={skill}
-                onChange={(e) => handleArrayChange(index, e)}
-              />
-            ))}
-            <button type="button" onClick={() => handleAddItem('skills')}>Add Skill</button>
-          </div>
-
-          <div className="form-group collaborator-group">
-          <label htmlFor="collaborator">Collaborator</label>
-          <div className="toggle-switch">
-            <input
-              type="checkbox"
-              id="collaborator"
-              name="collaborator"
-              checked={formData.collaborator}
-              onChange={(e) => setFormData({ ...formData, collaborator: e.target.checked })}
-            />
-            <span className="slider"></span>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#D8B4FE] via-[#C084FC] to-[#818CF8] p-6 flex items-center justify-center">
+      <div className="bg-white/20 backdrop-blur-lg rounded-2xl shadow-2xl p-8 w-full max-w-5xl text-white">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-semibold">Update Profile</h1>
+          <button
+            onClick={() => navigate(`/myprofile/${userId}`)}
+            className="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-md font-medium text-sm text-white bg-violet-600 px-3 py-1 rounded-md hover:bg-violet-700"
+          >
+            Go Back
+          </button>
         </div>
 
+        {error && <p className="text-red-200 mb-4 text-center">{error}</p>}
+        {success && <p className="text-green-200 mb-4 text-center">{success}</p>}
 
-          <button type="submit" disabled={loading}>
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-base mb-1">Favorite Language</label>
+              <input
+                type="text"
+                name="favlanguage"
+                value={formData.favlanguage}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg bg-white/80 text-black focus:outline-none focus:ring-2 focus:ring-violet-400"
+              />
+            </div>
+            <div>
+              <label className="block text-base mb-1">Rating</label>
+              <input
+                type="number"
+                name="rating"
+                value={formData.rating}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg bg-white/80 text-black focus:outline-none focus:ring-2 focus:ring-violet-400"
+              />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-base mb-1">Platform</label>
+              <input
+                type="text"
+                name="platform"
+                value={formData.platform}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg bg-white/80 text-black focus:outline-none focus:ring-2 focus:ring-violet-400"
+              />
+            </div>
+            <div>
+              <label className="block text-base mb-1">GitHub</label>
+              <input
+                type="url"
+                name="gitHub"
+                value={formData.gitHub}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg bg-white/80 text-black focus:outline-none focus:ring-2 focus:ring-violet-400"
+              />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-base mb-2">Project Links</label>
+              {formData.projectslinks.map((link, i) => (
+                <input
+                  key={i}
+                  type="text"
+                  name="projectslinks"
+                  value={link}
+                  onChange={(e) => handleArrayChange(i, e)}
+                  className="w-full mb-2 p-3 rounded-lg bg-white/80 text-black focus:outline-none focus:ring-2 focus:ring-violet-400"
+                />
+              ))}
+              <button
+                type="button"
+                onClick={() => handleAddItem('projectslinks')}
+                className="text-sm text-white bg-violet-600 px-3 py-1 rounded-md hover:bg-violet-700"
+              >
+                + Add Project
+              </button>
+            </div>
+
+            <div>
+              <label className="block text-base mb-2">Skills</label>
+              {formData.skills.map((skill, i) => (
+                <input
+                  key={i}
+                  type="text"
+                  name="skills"
+                  value={skill}
+                  onChange={(e) => handleArrayChange(i, e)}
+                  className="w-full mb-2 p-3 rounded-lg bg-white/80 text-black focus:outline-none focus:ring-2 focus:ring-violet-400"
+                />
+              ))}
+              <button
+                type="button"
+                onClick={() => handleAddItem('skills')}
+                className="text-sm text-white bg-violet-600 px-3 py-1 rounded-md hover:bg-violet-700"
+              >
+                + Add Skill
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="text-base">Open to Collaborate?</label>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={formData.collaborator}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, collaborator: e.target.checked }))
+                }
+              />
+              <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-violet-500 rounded-full peer peer-checked:bg-violet-600 transition"></div>
+              <span className="ml-3 text-sm text-white font-medium">
+                {formData.collaborator ? 'Yes' : 'No'}
+              </span>
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-violet-600 hover:bg-violet-700 text-white py-3 rounded-lg font-medium transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             {loading ? 'Updating...' : 'Update Profile'}
           </button>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 
