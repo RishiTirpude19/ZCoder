@@ -19,7 +19,7 @@ module.exports.addSolution = async(req, res, next)=>{
   await solution.save();
   problem.solutions.push(solution._id);
   problem.save();
-  user.solutions.push(solutionId);
+  user.solutions.push(solution._id);
   user.save();
   res.status(200).json({message : "Solution Added"});
   } catch (error) {
