@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProblemCard from '../components/ProblemCard';
+import { Loader2 } from "lucide-react";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -57,12 +58,12 @@ function Dashboard() {
     ))}
   </div>
 ) : (
-  <div className="text-center text-white/90 italic mt-20">
-    No Problems yet...
+  <div className="flex justify-center items-center h-screen">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
   </div>
 )}
       </div>
-    </div>
+    </div> 
   );
 }
 

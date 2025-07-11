@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ProblemCard from "../components/ProblemCard.jsx";
 import { useNavigate } from 'react-router-dom';
+import { Loader2 } from "lucide-react";
 
 function BookMarkProblems() {
   const [loading, setLoading] = useState(false);
@@ -37,7 +38,9 @@ function BookMarkProblems() {
         </h1>
 
         {loading ? (
-          <div className="text-center text-white/90 italic">Loading...</div>
+          <div className="flex justify-center items-center h-screen">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+</div>
         ) : bookmarkProblems.length === 0 ? (
           <div className="text-center text-white/90 italic mt-20">
             No Bookmarked Problems Yet...

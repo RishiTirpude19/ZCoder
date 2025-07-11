@@ -101,7 +101,7 @@ app.use((err, req, res, next) => {
 });
 
 const port = process.env.PORT;
-const server = app.listen(port, () => {
+const server = app.listen(port,'0.0.0.0', () => {
   console.log(`Server is listening on port: ${port}`);
 });
 
