@@ -99,7 +99,9 @@ app.use((err, req, res, next) => {
     statusCode,
   });
 });
-
+app.get('/health', (req, res) => {
+  res.status(200).send("OK");
+});
 const port = process.env.PORT;
 const server = app.listen(port,'0.0.0.0', () => {
   console.log(`Server is listening on port: ${port}`);
