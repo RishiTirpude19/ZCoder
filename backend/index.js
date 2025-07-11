@@ -99,6 +99,7 @@ app.use((err, req, res, next) => {
     statusCode,
   });
 });
+
 app.get('/health', (req, res) => {
   res.status(200).send("OK");
 });
