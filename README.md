@@ -101,7 +101,7 @@ Start the application from the root directory
 ## Screenshots
 
 ### Landing Page:
-![App Screenshot](./assets/Screenshot%20(1).png "App Screenshot")
+![App Screenshot](./assets/Home.png "App Screenshot")
 ### Sign In Page:
 ![App Screenshot](./assets/Screenshot%20(11).png "App Screenshot")
 ### Sign Up Page:
