@@ -58,8 +58,14 @@ function ProblemDetail() {
   return (
     <div className="min-h-screen flex justify-center items-start bg-gradient-to-br from-[#D8B4FE] via-[#C084FC] to-[#818CF8] p-6">
       <div className="bg-white/20 backdrop-blur-md text-white rounded-2xl shadow-2xl w-full max-w-4xl p-8 space-y-6">
+      <button
+                onClick={() => navigate(`/dashboard`)}
+                className="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg transition"
+              > 
+                ⬅ Back to Dashboard
+              </button>
         <h1 className="text-3xl font-bold mb-4 text-center select-none">Problem Details</h1>
-
+        
         <div className="flex flex-wrap justify-center gap-4">
           <button onClick={handleSolution} className="bg-violet-600 hover:bg-violet-700 px-4 py-2 rounded-lg font-medium transition">
             Solutions ({problem.solutions.length})

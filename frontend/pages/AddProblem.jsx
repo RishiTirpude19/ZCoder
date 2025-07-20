@@ -65,6 +65,14 @@ function AddProblem() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#D8B4FE] via-[#C084FC] to-[#818CF8] p-6">
             <div className="bg-white/20 backdrop-blur-md rounded-2xl shadow-2xl p-8 w-full max-w-5xl text-white">
+            <div className="mb-4">
+              <button
+                onClick={() => navigate(`/dashboard`)}
+                className="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg transition"
+              > 
+                ⬅ Back to Dashboard
+              </button>
+            </div>
                 <h1 className="text-3xl font-semibold mb-8 text-center select-none">Add a New Problem</h1>
                 <form className="space-y-6" onSubmit={handleSubmit}>
 

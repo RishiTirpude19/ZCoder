@@ -52,7 +52,7 @@
             <div className="mb-4">
               <button
                 onClick={() => navigate(`/problem/${problemId}`)}
-                className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-lg text-white hover:bg-white/30 transition"
+                className="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg transition"
               >
                 ⬅ Back to Problem
               </button>

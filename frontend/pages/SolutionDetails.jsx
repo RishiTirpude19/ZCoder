@@ -37,13 +37,13 @@ function SolutionDetails() {
         <div className="flex flex-wrap gap-4 mb-6">
           <button
             onClick={() => navigate(`/problem/${problemId}/solutions`)}
-            className="bg-violet-600 hover:bg-violet-700 px-4 py-2 rounded-lg text-white hover:bg-white/30 transition"
+            className="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg transition"
           >
             ⬅ Back to Solutions
           </button>
           <button
             onClick={() => navigate(`/problem/${problemId}/solutions/${solutionId}/reviews`)}
-            className="bg-violet-600 hover:bg-violet-700 px-4 py-2 rounded-lg text-white hover:bg-white/30 transition"
+            className="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg transition"
           >
             View Reviews ({solution.reviews.length})
           </button>
