@@ -1,6 +1,8 @@
 
 # ZCODER
 
+🔗 **Live Website:** [https://z-coder.vercel.app](https://z-coder.vercel.app)
+
 ZCoder is an innovative platform designed to enhance the coding experience through personalized profiles, collaborative learning, and interactive features. Users can create unique profiles that showcase their coding identity, allowing them to connect with like-minded individuals in the community. The platform offers a comprehensive suite of tools aimed at fostering engagement and knowledge sharing among users, including the ability to upload coding problems, submit solutions, and provide reviews and feedback on both. Each problem is accompanied by a dedicated discussion room with real-time communication, enabling collaborative problem-solving.
 
 ZCoder also features the Ask AI tool, which leverages Groq AI to simulate a personalized learning experience, helping users solve problems and enhance their understanding with AI-driven insights. Additionally, the platform includes a "Hire Collaborator" function, allowing users to connect with others based on the skills showcased in their profiles and form collaborative teams for projects.
