@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function MyProfile() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
     async function fetchUserInfo() {

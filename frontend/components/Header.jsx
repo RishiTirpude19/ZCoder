@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 function Header() {
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
 
   const [problemsOpen, setProblemsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
@@ -39,8 +39,8 @@ function Header() {
   async function handleClick() {
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`, {}, { withCredentials: true });
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("userId");
       navigate("/");
     } catch (error) {
       console.log(error);

@@ -8,7 +8,7 @@ let socket;
 let selectedChatCompare;
 
 function Messages() {
-  const loggedUserId = localStorage.getItem("userId");
+  const loggedUserId = sessionStorage.getItem("userId");
   const [socketConnected, setSocketConnected] = useState(false);
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
@@ -36,7 +36,7 @@ function Messages() {
 
   // Socket connection setup
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     socket = io(ENDPOINT, {
       auth: { token },
     });

@@ -13,7 +13,7 @@ function Signup() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+        const token = sessionStorage.getItem('token'); 
         if (token) {
             navigate("/dashboard");
         }
@@ -34,8 +34,8 @@ function Signup() {
                 { email, password, username },
                 { withCredentials: true }
             );
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("userId", response.data._id);
+            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("userId", response.data._id);
             navigate("/dashboard");
         } catch (err) {
             if (err.response) {

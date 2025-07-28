@@ -9,7 +9,7 @@ function ProblemDetail() {
   const { user } = useContext(UserContext);
   const [problem, setProblem] = useState(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const currentUserId = localStorage.getItem("userId");
+  const currentUserId = sessionStorage.getItem("userId");
 
   useEffect(() => {
     async function fetchProblem() {

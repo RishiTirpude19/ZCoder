@@ -29,9 +29,10 @@ module.exports.signup = async (req, res, next) => {
 
 module.exports.signin = async (req,res,next)=>{
     try {
-        if (req.cookies.token) {
-            return next(errorHandeler(400, "User already signed in"));
-        }
+        
+        // if (sessionStorage.getItem("token")) {
+        //     return next(errorHandeler(400, "User already signed in"));
+        // }
         const {email , password} = req.body;
         let validUser = await User.findOne({ email });
         if(!validUser){

@@ -18,9 +18,9 @@ function ProblemDiscussion() {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const userId = localStorage.getItem("userId");
+                const userId = sessionStorage.getItem("userId");
                 if (!userId) {
-                    console.error("No userId found in localStorage.");
+                    console.error("No userId found in sessionStorage.");
                     navigate('/login'); 
                     return;
                 }
@@ -38,7 +38,7 @@ function ProblemDiscussion() {
     
     useEffect(() => {
         
-        const token = localStorage.getItem('token'); 
+        const token = sessionStorage.getItem('token'); 
         if (!token) {
             console.error("No token found. Please log in.");
             navigate('/login'); 

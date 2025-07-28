@@ -5,7 +5,7 @@ import { FaTrash } from 'react-icons/fa';
 
 function ProblemReviews() {
   const [reviews, setReviews] = useState([]);
-  const currUser = localStorage.getItem("userId");
+  const currUser = sessionStorage.getItem("userId");
   const { problemId } = useParams();
   const navigate = useNavigate();
 

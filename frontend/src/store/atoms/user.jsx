@@ -1,7 +1,7 @@
 import {atom ,selector} from "recoil"
 import axios from "axios"
 
-const userId = localStorage.getItem("userId")
+const userId = sessionStorage.getItem("userId")
 
 export const userAtom = atom({
 

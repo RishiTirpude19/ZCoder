@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie'; 
 
 function PreventRoute({children}) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     console.log(token);
     return !token ? children : <Navigate to="/dashboard" />;
 }

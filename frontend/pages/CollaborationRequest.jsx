@@ -2,7 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom';
 
 function CollaborationRequest() {
-  const requesterId = localStorage.getItem("userId");
+  const requesterId = sessionStorage.getItem("userId");
   const {recipientId} = useParams().
   return (
     <div>

@@ -12,14 +12,14 @@ function Signin() {
     const { setUser } = useContext(UserContext);
 
     useEffect(() => {
-        const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+        const token = sessionStorage.getItem('token'); 
         if (token) {
             navigate("/dashboard");
         }
     }, [navigate]);
 
     const handleClick = async (event) => {
-        event.preventDefault();
+        event.preventDefault(); 
         if (!email || !password) {
             setError("Both email and password are required.");
             return;
@@ -30,12 +30,12 @@ function Signin() {
 
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signin`,
-                { email, password },
+                { email, password },    
                 { withCredentials: true }
             );
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("userId", response.data._id);
-            setUser(response.data);
+            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("userId", response.data._id);
+            setUser(response.data); 
             navigate("/dashboard");
         } catch (err) {
             if (err.response) {
