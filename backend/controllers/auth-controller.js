@@ -17,11 +17,10 @@ module.exports.signup = async (req, res, next) => {
             password: hashPassword,
         });
         await user.save();
-        console.log(user);
-        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '24h' });
         const { password: savedPassword, ...rest } = user._doc;
         res.cookie("token", token, {  httpOnly: true,
-    secure: true, sameSite: 'none'}).status(200).json({ ...rest, token });
+        secure: true, sameSite: 'none'}).status(200).json({ message: "User created successfully", token , user: { _id: user._id, username: user.username, email: user.email }});
     } catch (error) {
         next(error);
     }
@@ -29,22 +28,18 @@ module.exports.signup = async (req, res, next) => {
 
 module.exports.signin = async (req,res,next)=>{
     try {
-        
-        // if (sessionStorage.getItem("token")) {
-        //     return next(errorHandeler(400, "User already signed in"));
-        // }
         const {email , password} = req.body;
         let validUser = await User.findOne({ email });
         if(!validUser){
-            return next(errorHandeler(404 , "User not Found"));
+            return res.status(404).json({message: "User not found"});
         }
         const validPassword = await bcryptjs.compare(password , validUser.password);
         if(!validPassword) {
-            return next(errorHandeler(404 , "Invalid Creadentials"));
+            return res.status(400).json({message: "Invalid credentials"});
         }
-        const token = jwt.sign({id: validUser._id }, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({id: validUser._id }, JWT_SECRET, { expiresIn: '24h' });
         const {password : hashPassword , ...rest} = validUser._doc;
-        res.cookie("token" , token , {httpOnly :true , secure: true, sameSite: 'none'}).status(200).json({...rest , token});
+        res.cookie("token" , token , {httpOnly :true , secure: true, sameSite: 'none'}).status(200).json({ message: "User created successfully", token , user: { _id: validUser._id, username: validUser.username, email: validUser.email }});
     } catch (error) {
         next(error);
     }
@@ -56,4 +51,11 @@ module.exports.logout = async(req,res,next)=>{
     } catch (error) {
         next(error);
     }
+}
+
+module.exports.checkAuth = (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+    res.status(200).json({ user: req.user });
 }

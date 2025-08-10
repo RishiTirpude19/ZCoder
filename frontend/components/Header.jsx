@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch , useSelector } from "react-redux";
+import { clearUser } from "../redux/userSlice";
+
 
 function Header() {
   const navigate = useNavigate();
-  const userId = sessionStorage.getItem("userId");
+  const userId = useSelector((state) => state.user.user._id);
 
   const [problemsOpen, setProblemsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
@@ -13,7 +16,7 @@ function Header() {
   const problemsRef = useRef();
   const communityRef = useRef();
   const profileRef = useRef();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -39,8 +42,7 @@ function Header() {
   async function handleClick() {
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`, {}, { withCredentials: true });
-      sessionStorage.removeItem("token");
-      sessionStorage.removeItem("userId");
+      dispatch(clearUser());
       navigate("/");
     } catch (error) {
       console.log(error);

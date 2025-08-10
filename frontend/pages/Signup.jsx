@@ -1,23 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from "axios";
 import { useNavigate, Link } from 'react-router-dom';
-import { UserContext } from "../components/UserContext.jsx";
+import { useDispatch } from 'react-redux';
+import { setUser} from '../redux/userSlice';
+
 
 function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
-    const { setUser } = useContext(UserContext);
+    const [loading, setLoading] = useState(false); 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const token = sessionStorage.getItem('token'); 
-        if (token) {
-            navigate("/dashboard");
-        }
-    }, [navigate]);
+    const dispatch = useDispatch();
 
     const handleClick = async (event) => {
         event.preventDefault();
@@ -34,8 +29,8 @@ function Signup() {
                 { email, password, username },
                 { withCredentials: true }
             );
-            sessionStorage.setItem("token", response.data.token);
-            sessionStorage.setItem("userId", response.data._id);
+            
+            dispatch(setUser(response.data.user));
             navigate("/dashboard");
         } catch (err) {
             if (err.response) {

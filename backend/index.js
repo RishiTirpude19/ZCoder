@@ -12,14 +12,15 @@ const userRouter = require("./routes/user-route.js");
 const solutionRouter = require("./routes/solution-route.js");
 const blogRouter = require("./routes/blog-route.js");
 const askAiRouter = require("./routes/askai-route.js");
-const chatRouter = require("./routes/chatRoute.js");
-const messageRoute = require("./routes/message-route.js");
+
+const messageRoute = require("./routes/message.route.js");
 const authMiddleware = require("./middlewares/auth-middelware.js");
 const User = require("./models/user-model.js");
 const { errorHandeler } = require("./utils/error.js");
-dotenv.config();
+const {io , app , server} = require("./lib/socket.js");
+const port = process.env.PORT;
 
-const app = express();
+dotenv.config();
 
 app.use(cors({
   origin: process.env.VITE_FRONTEND_URL,
@@ -87,8 +88,18 @@ app.use("/", userRouter);
 app.use("/blogs", blogRouter);
 app.use("/problem/:problemId", solutionRouter);
 app.use("/askai", askAiRouter);
-app.use("/chat", chatRouter);
-app.use("/message", messageRoute);
+
+app.use("/messages", messageRoute);
+
+
+
+app.get('/health', (req, res) => {
+  res.status(200).send("OK");
+});
+
+server.listen(port,'0.0.0.0', () => {
+  console.log(`Server is listening on port: ${port}`);
+});
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
@@ -100,49 +111,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.get('/health', (req, res) => {
-  res.status(200).send("OK");
-});
-const port = process.env.PORT;
-const server = app.listen(port,'0.0.0.0', () => {
-  console.log(`Server is listening on port: ${port}`);
-});
 
-const io = require("socket.io")(server, {
-  pingTimeout: 60000,
-  cors: {
-    origin: process.env.VITE_FRONTEND_URL,
-    credentials: true,
-    methods: ["GET", "POST"]
-  }
-});
-
-io.on("connection", (socket) => {
-  console.log("Connected to socket:", socket.id);
-
-  socket.on("setup", (userData) => {
-    socket.join(userData._id);
-    console.log(`User ${userData._id} connected`);
-    socket.emit("connected");
-  });
-
-  socket.on("join chat", (room) => {
-    socket.join(room);
-    console.log(`Joined chat room: ${room}`);
-  });
-
-  socket.on("send message", (newMessageReceived) => {
-    const chat = newMessageReceived.updatedChat;
-    if (!chat.users) return console.log("Chat users not defined");
-
-    chat.users.forEach((user) => {
-      if (user.toString() !== newMessageReceived.newMessage.sender.toString()) {
-        socket.in(parseInt(user)).emit("receive message", newMessageReceived);
-      }
-    });
-  });
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
-});

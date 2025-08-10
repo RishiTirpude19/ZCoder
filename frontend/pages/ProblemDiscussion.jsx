@@ -1,9 +1,10 @@
 // ProblemDiscussion.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { io } from 'socket.io-client';
+
 import "./ProblemDiscussion.css";
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 function ProblemDiscussion() {
     const { problemId } = useParams();
@@ -12,13 +13,14 @@ function ProblemDiscussion() {
     const [user, setUser] = useState(null); 
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
-    const socketRef = useRef(null); 
+ 
 
 
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const userId = sessionStorage.getItem("userId");
+                const userId = useSelector((state) => state.user.user._id);
+                console.log(userId);
                 if (!userId) {
                     console.error("No userId found in sessionStorage.");
                     navigate('/login'); 
@@ -36,46 +38,6 @@ function ProblemDiscussion() {
     }, [navigate]);
 
     
-    useEffect(() => {
-        
-        const token = sessionStorage.getItem('token'); 
-        if (!token) {
-            console.error("No token found. Please log in.");
-            navigate('/login'); 
-            return;
-        }
-
-        
-        socketRef.current = io(`${import.meta.env.VITE_BACKEND_URL}`, {
-            auth: { token },
-            withCredentials: true, 
-        });
-
-        
-        socketRef.current.on('connect_error', (err) => {
-            console.error("Connection Error:", err.message);
-        });
-
-        
-        socketRef.current.emit('joinRoom', problemId);
-
-        
-        socketRef.current.on('chatHistory', (history) => {
-            setMessages(history);
-        });
-
-        
-        socketRef.current.on('message', (message) => {
-            setMessages((prev) => [...prev, message]);
-        });
-
-        
-        return () => {
-            if (socketRef.current) {
-                socketRef.current.disconnect();
-            }
-        };
-    }, [problemId, navigate]);
 
     
     useEffect(() => {
@@ -87,18 +49,10 @@ function ProblemDiscussion() {
         }
     }, [user]);
 
-    const sendMessage = (e) => {
-        e.preventDefault();
-        if (input.trim() && socketRef.current) {
-            socketRef.current.emit('chatMessage', { problemId, message: input });
-            setInput('');
-        }
-    };
 
     return (
         <div className="discussion-room">
             <h2>Discussion Room</h2>
-            
             
             {user ? (
                 <>

@@ -2,10 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 function ProblemReviews() {
   const [reviews, setReviews] = useState([]);
-  const currUser = sessionStorage.getItem("userId");
+  const currUser = useSelector((state) => state.user.user._id);
+  console.log(currUser);
   const { problemId } = useParams();
   const navigate = useNavigate();
 

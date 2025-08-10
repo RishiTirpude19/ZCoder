@@ -58,9 +58,9 @@ function AskAi() {
 
     setChatHistory((prev) => [...prev, { sender: "ai", content: "" }]);
   };
-
+  
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#D8B4FE] via-[#C084FC] to-[#818CF8] px-6 py-12 flex justify-center">
+    <div className="h-[91.5vh] bg-gradient-to-br from-[#D8B4FE] via-[#C084FC] to-[#818CF8] px-6 py-12 flex justify-center">
       <div className="w-full max-w-4xl bg-white/20 backdrop-blur-md p-8 rounded-2xl shadow-2xl text-white flex flex-col">
         <h1 className="text-3xl font-semibold mb-6 text-center select-none cursor-default">
           Chat with Groq AI

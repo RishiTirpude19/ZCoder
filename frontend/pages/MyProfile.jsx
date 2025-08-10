@@ -1,11 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function MyProfile() {
+  const userId = useSelector((state) => state.user.user)._id;
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  const userId = sessionStorage.getItem("userId");
+  
 
   useEffect(() => {
     async function fetchUserInfo() {

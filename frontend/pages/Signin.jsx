@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { useNavigate, Link } from 'react-router-dom';
-import { UserContext } from "../components/UserContext.jsx";
+import  {setUser }  from "../redux/userSlice";
+import { useDispatch } from 'react-redux';
 
 function Signin() {
     const [email, setEmail] = useState("");
@@ -9,14 +10,7 @@ function Signin() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext);
-
-    useEffect(() => {
-        const token = sessionStorage.getItem('token'); 
-        if (token) {
-            navigate("/dashboard");
-        }
-    }, [navigate]);
+    const dispatch = useDispatch();
 
     const handleClick = async (event) => {
         event.preventDefault(); 
@@ -33,9 +27,8 @@ function Signin() {
                 { email, password },    
                 { withCredentials: true }
             );
-            sessionStorage.setItem("token", response.data.token);
-            sessionStorage.setItem("userId", response.data._id);
-            setUser(response.data); 
+            console.log("login response", response.data);
+            dispatch(setUser(response.data.user));
             navigate("/dashboard");
         } catch (err) {
             if (err.response) {

@@ -6,5 +6,6 @@ const authMiddleware = require("../middlewares/auth-middelware.js");
 router.post("/signup" , AC.signup);
 router.post("/signin" , AC.signin);
 router.post("/logout" , authMiddleware , AC.logout);
+router.get("/check-auth" , authMiddleware , AC.checkAuth);
 
 module.exports = router;

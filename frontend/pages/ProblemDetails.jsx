@@ -1,15 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { UserContext } from "../components/UserContext.jsx";
+import { useDispatch , useSelector } from 'react-redux';
+
 
 function ProblemDetail() {
   const navigate = useNavigate();
   const { problemId } = useParams();
-  const { user } = useContext(UserContext);
   const [problem, setProblem] = useState(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const currentUserId = sessionStorage.getItem("userId");
+  const currentUserId = useSelector((state) => state.user.user._id);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchProblem() {
