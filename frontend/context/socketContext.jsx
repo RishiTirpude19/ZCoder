@@ -18,8 +18,11 @@ export const SocketProvider = ({ user, children }) => {
     }
 
     console.log("Creating socket connection for user:", user._id);
+
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || 
+      (import.meta.env.PROD ? 'https://zcoder-6mjt.onrender.com' : 'http://localhost:8080');
     
-    const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
+    const newSocket = io(socketUrl, {
       withCredentials: true,
       reconnection: true,
       reconnectionAttempts: 5,
