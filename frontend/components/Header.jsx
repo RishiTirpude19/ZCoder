@@ -12,7 +12,7 @@ function Header() {
   const [problemsOpen, setProblemsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-
+  const [loggingOut , setLoggingOut] = useState(false);
   const problemsRef = useRef();
   const communityRef = useRef();
   const profileRef = useRef();
@@ -40,6 +40,7 @@ function Header() {
   }, []);
 
   async function handleClick() {
+    setLoggingOut(true);
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`, {}, { withCredentials: true });
       dispatch(clearUser());
@@ -47,6 +48,8 @@ function Header() {
     } catch (error) {
       console.log(error);
       console.log("error while logging out");
+    } finally{
+      setLoggingOut(false);
     }
   }
 
@@ -114,12 +117,39 @@ function Header() {
 
         </div>
 
-        <button
-          onClick={handleClick}
-          className="ml-4 bg-white text-[#6b21a8] px-4 py-2 rounded-md font-semibold hover:bg-[#d8b4fe] hover:text-white transition-colors duration-300"
+      <button
+      onClick={handleClick}
+      disabled={loggingOut}
+      className={`ml-4 px-4 py-2 rounded-md font-semibold transition-colors duration-300 flex items-center justify-center gap-2
+        ${loggingOut 
+          ? "bg-purple-300 text-white cursor-not-allowed opacity-70" 
+          : "bg-white text-[#6b21a8] hover:bg-[#d8b4fe] hover:text-white"
+        }`}
+    >
+      {loggingOut && (
+        <svg
+          className="animate-spin h-4 w-4 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
         >
-          Log Out
-        </button>
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          ></path>
+        </svg>
+      )}
+      {loggingOut ? "Logging out..." : "Log out"}
+    </button>
       </nav>
     </header>
   );
