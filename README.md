@@ -107,9 +107,11 @@ Start the application from the root directory
 ### Sign In Page:
 ![App Screenshot](./assets/SigninPae.png "App Screenshot")
 ### Sign Up Page:
-![App Screenshot](./assets/SignUp.png "App Screenshot")
+
+
 ### Dashboard:
-![App Screenshot](./assets/Dashboard.png "App Screenshot")
+![App Screenshot](./assets/SignUp.png "App Screenshot")
+
 ### Add New Solution
 ![App Screenshot](./assets/AddSolutions.png "App Screenshot")
 ### Codeforces Contest Calendar:  
