@@ -18,3 +18,24 @@ module.exports.showUsers = async(req,res,next)=>{
         next(error);
     }
 }
+
+module.exports.getTopUsers = async(req,res,next)=>{
+    try {
+    const topUsers = await User.aggregate([
+        {
+        $project: {
+            username: 1,
+            email: 1,
+            solutionsCount: { $size: { $ifNull: ["$solutions", []] } },
+        },
+        },
+        { $sort: { solutionsCount: -1 } }, 
+        { $limit: 5 } 
+    ]);
+
+    res.status(200).json(topUsers);
+    } catch (error) {
+    console.error("Error fetching top users:", error);
+    res.status(500).json({ message: "Server error" });
+    }
+}

@@ -1,5 +1,52 @@
 /* Messages Component Custom Styles */
 
+/* Custom scrollbar for the sidebar and message area to match the dark theme */
+.sidebar-scroll::-webkit-scrollbar,
+.message-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track,
+.message-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb,
+.message-scroll::-webkit-scrollbar-thumb {
+  background-color: #334155;
+  /* slate-700 */
+  border-radius: 10px;
+  border: 3px solid transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover,
+.message-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #475569;
+  /* slate-600 */
+}
+
+/* Optional: Keep the online pulse animation if you like it */
+.online-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
 /* Smooth scrollbar for message area */
 .message-scroll::-webkit-scrollbar {
   width: 6px;

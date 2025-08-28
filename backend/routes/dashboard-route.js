@@ -4,6 +4,7 @@ const router = express.Router({mergeParams : true});
 const authMiddleware = require("../middlewares/auth-middelware.js");
 
 router.get("/dashboard" ,authMiddleware, DC.showPoroblems);
+router.get("/top-users" , authMiddleware , DC.getTopUsers)
 
 module.exports = router;
 

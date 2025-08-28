@@ -103,21 +103,21 @@ Start the application from the root directory
 ## Screenshots
 
 ### Landing Page:
-![App Screenshot](./assets/Home.png "App Screenshot")
+![App Screenshot](./assets/LandingPage.png "App Screenshot")
 ### Sign In Page:
-![App Screenshot](./assets/SignIn.png "App Screenshot")
+![App Screenshot](./assets/SigninPae.png "App Screenshot")
 ### Sign Up Page:
 ![App Screenshot](./assets/SignUp.png "App Screenshot")
 ### Dashboard:
-![App Screenshot](./assets/DashBoard.png "App Screenshot")
+![App Screenshot](./assets/Dashboard.png "App Screenshot")
 ### Add New Solution
-![App Screenshot](./assets/AddSolution.png "App Screenshot")
+![App Screenshot](./assets/AddSolutions.png "App Screenshot")
 ### Codeforces Contest Calendar:  
 
-![App Screenshot](./assets/ContestCalender.png "App Screenshot")
+![App Screenshot](./assets/Contest.png "App Screenshot")
 ### Profile Page:
 
-![App Screenshot](./assets/Profile.png "App Screenshot")
+![App Screenshot](./assets/UserProfile.png "App Screenshot")
 ### Ask AI Page:
 
 ![App Screenshot](./assets/AskAi.png "App Screenshot")
@@ -125,19 +125,16 @@ Start the application from the root directory
 ### Important Links:
 ![App Screenshot](./assets/ImpLinks.png "App Screenshot")
 ### Problem Statement:
-![App Screenshot](./assets/OurProblem.png "App Screenshot")
-
-
-![App Screenshot](./assets/OurProblem2.png "App Screenshot")
+![App Screenshot](./assets/ProblemDetails.png "App Screenshot")
 
 ### Review Page:
-![App Screenshot](./assets/problemReviews.png "App Screenshot")
+![App Screenshot](./assets/Reviews.png "App Screenshot")
 
 ### Add Reviews
-![App Screenshot](./assets/Screenshot%202025-07-20%20142353.png "App Screenshot")
+![App Screenshot](./assets/AddReviews.png "App Screenshot")
 
 ### Update User Profile:
 ![App Screenshot](./assets/UpdateProfile.png "App Screenshot")
 
 ### Chat Page:
-![App Screenshot](./assets/Messages.png "App Screenshot")
+![App Screenshot](./assets/ChatPeers.png "App Screenshot")

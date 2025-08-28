@@ -41,10 +41,11 @@ const userSchema = new Schema({
         type : Schema.Types.ObjectId,
         ref : "Problem"
     }],
+    
     solutions : [
         {
-        type : Schema.Types.ObjectId,
-        ref : "Solution"
+            type : Schema.Types.ObjectId,
+            ref: "Solution",
         }
     ],
     otherBookMarkedProblems : [ 

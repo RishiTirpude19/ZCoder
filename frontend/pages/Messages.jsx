@@ -1,46 +1,64 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import {formatMessageTime} from "../utils/DateTime";
-import {useSocket} from "../context/socketContext";
+import { formatMessageTime } from "../utils/DateTime";
+import { useSocket } from "../context/socketContext";
+import { Loader2, MessageSquare, Search, SendHorizonal, Users } from "lucide-react";
 import "./Messages.css";
 
+// --- The UserCard component and all logic functions remain the same ---
+const UserCard = ({ user, isOnline, onClick, isSelected }) => (
+    <div
+      onClick={() => onClick(user)}
+      className={`p-3 rounded-xl cursor-pointer transition-all duration-300 group flex items-center gap-4 border ${
+        isSelected
+          ? "bg-blue-600/30 border-blue-500/60 scale-[1.03]"
+          : "bg-slate-800/40 border-slate-700/50 hover:bg-slate-700/60 hover:border-slate-600"
+      }`}
+    >
+      <div className="relative flex-shrink-0">
+        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+          {(user.username || "U").charAt(0).toUpperCase()}
+        </div>
+        <span
+          className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-slate-800 ${
+            isOnline ? "bg-green-400" : "bg-slate-500"
+          }`}
+        ></span>
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="font-semibold text-white truncate">{user.username || "Unknown"}</div>
+        <p className={`text-sm ${isOnline ? "text-green-400" : "text-slate-400"}`}>
+          {isOnline ? "Online" : "Offline"}
+        </p>
+      </div>
+    </div>
+  );
 
 const Message = () => {
   const user = useSelector((state) => state.user.user);
-  const { onlineUsers } = useSocket();
-  const { socket } = useSocket();
+  const { onlineUsers, socket } = useSocket();
   const bottomRef = useRef(null);
   const [usersList, setUserList] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [error, setError] = useState(null);
-
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
     if (!socket) return;
-
     const handleIncomingMessage = (message) => {
-      console.log("Received new message:", message);
-      
       if (!selectedUser) return;
-      
-      // Check if this message is part of the current conversation
       const senderId = typeof message.sender === "object" ? message.sender._id : message.sender;
       const receiverId = typeof message.receiver === "object" ? message.receiver._id : message.receiver;
-      
-      const isRelevantMessage = 
+      const isRelevantMessage =
         (senderId === selectedUser._id && receiverId === user._id) ||
         (senderId === user._id && receiverId === selectedUser._id);
-      
       if (isRelevantMessage) {
         setMessages((prev) => {
-          // Check if message already exists to prevent duplicates
           const messageExists = prev.some(m => m._id === message._id);
           if (!messageExists) {
             return [...prev, message];
@@ -49,23 +67,16 @@ const Message = () => {
         });
       }
     };
-
     const handleMessageSent = (message) => {
-      console.log("Message sent confirmation:", message);
-      // This handles the sender's side - confirm message was sent
       if (selectedUser) {
         const senderId = typeof message.sender === "object" ? message.sender._id : message.sender;
         const receiverId = typeof message.receiver === "object" ? message.receiver._id : message.receiver;
-        
-        const isRelevantMessage = 
+        const isRelevantMessage =
           (senderId === user._id && receiverId === selectedUser._id);
-        
         if (isRelevantMessage) {
           setMessages((prev) => {
-            // Check if message already exists to prevent duplicates
             const messageExists = prev.some(m => m._id === message._id);
             if (!messageExists) {
-              // Remove any temporary messages and add the real one
               const filteredMessages = prev.filter(m => !m.isTemporary);
               return [...filteredMessages, message];
             }
@@ -74,10 +85,8 @@ const Message = () => {
         }
       }
     };
-
     socket.on("newMessage", handleIncomingMessage);
     socket.on("messageSent", handleMessageSent);
-
     return () => {
       socket.off("newMessage", handleIncomingMessage);
       socket.off("messageSent", handleMessageSent);
@@ -88,10 +97,7 @@ const Message = () => {
     const fetchUsers = async () => {
       try {
         setLoadingUsers(true);
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/messages/users`,
-          { withCredentials: true }
-        );
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/messages/users`, { withCredentials: true });
         setUserList(response.data);
       } catch (err) {
         console.error("Error fetching users:", err);
@@ -113,12 +119,8 @@ const Message = () => {
     setSelectedUser(clickedUser);
     setLoadingMessages(true);
     setMessages([]);
-
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/messages/${clickedUser._id}`,
-        { withCredentials: true }
-      );
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/messages/${clickedUser._id}`, { withCredentials: true });
       setMessages(response.data);
     } catch (err) {
       console.error("Error fetching messages:", err);
@@ -129,10 +131,8 @@ const Message = () => {
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedUser) return;
-
     const messageContent = newMessage;
     const tempMessageId = Date.now();
-    
     const tempMessage = {
       _id: tempMessageId,
       sender: user,
@@ -141,283 +141,181 @@ const Message = () => {
       createdAt: new Date().toISOString(),
       isTemporary: true
     };
-    
-    // Add temporary message immediately for better UX
     setMessages((prev) => [...prev, tempMessage]);
     setNewMessage("");
-
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/messages/send/${selectedUser._id}`,
-        { content: messageContent },
-        { withCredentials: true }
-      );
-      
-      // Replace temporary message with real one
-      setMessages((prev) => 
-        prev.map(msg => 
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/messages/send/${selectedUser._id}`, { content: messageContent }, { withCredentials: true });
+      setMessages((prev) =>
+        prev.map(msg =>
           msg._id === tempMessageId ? response.data : msg
         )
       );
-      
     } catch (err) {
       console.error("Error sending message:", err);
-      // Remove temporary message on error
       setMessages((prev) => prev.filter(msg => msg._id !== tempMessageId));
-      // Optionally show error to user
       alert("Failed to send message. Please try again.");
     }
   };
 
-  // Segregate users into online and offline
   const onlineUsersList = usersList.filter(u => onlineUsers.includes(u._id));
   const offlineUsersList = usersList.filter(u => !onlineUsers.includes(u._id));
-
-  // Filter based on search query
-  const filteredOnlineUsers = onlineUsersList.filter(u =>
-    (u.username || "").toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  const filteredOfflineUsers = offlineUsersList.filter(u =>
-    (u.username || "").toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const UserCard = ({ user, isOnline }) => (
-    <div
-      onClick={() => handleUserClick(user)}
-      className={`user-card p-4 rounded-xl cursor-pointer transition-all duration-200 group ${
-        selectedUser?._id === user._id
-          ? "bg-violet-600/80 shadow-lg scale-[1.02]"
-          : "bg-white/10 hover:bg-white/20 hover:scale-[1.01]"
-      } border border-white/10 hover:border-white/30`}
-    >
-      <div className="flex items-center space-x-3">
-        <div className="relative">
-          <div className="w-10 h-10 bg-gradient-to-br from-violet-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-            {(user.username || "U").charAt(0).toUpperCase()}
-          </div>
-          <span
-            className={`absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-white ${
-              isOnline ? "bg-green-400 online-pulse" : "bg-gray-400"
-            }`}
-          ></span>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="font-medium text-white truncate">{user.username || "Unknown"}</div>
-          <div className="flex items-center gap-2 text-xs mt-1">
-            <span className={`font-medium ${isOnline ? "text-green-300" : "text-gray-400"}`}>
-              {isOnline ? "Online" : "Last seen recently"}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const filteredOnlineUsers = onlineUsersList.filter(u => (u.username || "").toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredOfflineUsers = offlineUsersList.filter(u => (u.username || "").toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
-    <div className="h-[91.5vh] bg-gradient-to-br from-[#D8B4FE] via-[#C084FC] to-[#818CF8] p-6">
-      <div className="max-w-7xl mx-auto h-[calc(100vh-3rem)] flex gap-6">
-        
-        {/* Left Sidebar - Users List */}
-        <div className="sidebar w-80 bg-white/20 backdrop-blur-md rounded-2xl shadow-2xl p-6 flex flex-col glass-overlay">
+    <div className="h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+      {/*
+        CHANGE 1: This is now the main flex container.
+        - h-full: Takes the full height of its parent (the h-screen div).
+        - flex: Enables flexbox layout.
+        - flex-col lg:flex-row: Stacks the boxes vertically on mobile and places them side-by-side on large screens.
+      */}
+      <div className="max-w-7xl w-full mx-auto h-180 p-4 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-6">
+
+        {/*
+          CHANGE 2: This is the Left Sidebar.
+          - It's now a direct child of the flex container.
+          - lg:w-[400px]: A fixed width on large screens for stability.
+          - lg:flex-shrink-0: Prevents this column from shrinking.
+          - flex flex-col: This is crucial for its internal layout to work correctly.
+        */}
+        <div className="w-full lg:w-[400px] lg:flex-shrink-0 bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 flex flex-col">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white">Messages</h2>
-            <div className="flex items-center space-x-2 text-sm text-white/70">
-              <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-              <span>{onlineUsersList.length} online</span>
+            <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+              <MessageSquare className="h-7 w-7 text-blue-400" />
+              Conversations
+            </h2>
+            <div className="text-sm text-green-400 bg-green-500/10 px-3 py-1 rounded-full">
+              {onlineUsersList.length} Online
             </div>
           </div>
 
-          {/* Search Bar */}
-          <div className="mb-6">
+          <div className="relative mb-6">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
             <input
               type="text"
-              placeholder="Search conversations..."
+              placeholder="Search users..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white/20 transition-all border border-white/20"
+              className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-700/60 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all border border-slate-600"
             />
           </div>
 
-          {loadingUsers && (
-            <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+          {loadingUsers ? (
+            <div className="flex justify-center items-center h-full">
+              <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
+            </div>
+          ) : (
+            <div className="flex-1 overflow-y-auto space-y-4 sidebar-scroll -mr-3 pr-3 min-h-0">
+              {filteredOnlineUsers.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold text-green-400 uppercase tracking-wider mb-2">Online</h3>
+                  <div className="space-y-2">
+                    {filteredOnlineUsers.map((u) => <UserCard key={u._id} user={u} isOnline={true} onClick={handleUserClick} isSelected={selectedUser?._id === u._id} />)}
+                  </div>
+                </div>
+              )}
+              {filteredOfflineUsers.length > 0 && (
+                <div className={filteredOnlineUsers.length > 0 ? "mt-4" : ""}>
+                  <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Offline</h3>
+                  <div className="space-y-2">
+                    {filteredOfflineUsers.map((u) => <UserCard key={u._id} user={u} isOnline={false} onClick={handleUserClick} isSelected={selectedUser?._id === u._id} />)}
+                  </div>
+                </div>
+              )}
+              {usersList.length === 0 && !error && (
+                <div className="text-center py-16 text-slate-400">
+                  <Users className="h-10 w-10 mx-auto mb-4" />
+                  <p>No other users found.</p>
+                </div>
+              )}
+              {error && <p className="text-center text-red-400">{error}</p>}
             </div>
           )}
-
-          {error && (
-            <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 mb-4">
-              <p className="text-red-200">{error}</p>
-            </div>
-          )}
-
-          <div className="flex-1 overflow-y-auto space-y-6 sidebar-scroll">
-            {/* Online Users Section */}
-            {filteredOnlineUsers.length > 0 && (
-              <div>
-                <div className="flex items-center space-x-2 mb-3">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  <h3 className="text-sm font-semibold text-green-300 uppercase tracking-wide">
-                    Online ({filteredOnlineUsers.length})
-                  </h3>
-                </div>
-                <div className="space-y-2">
-                  {filteredOnlineUsers.map((user, idx) => (
-                    <UserCard key={user._id || idx} user={user} isOnline={true} />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Offline Users Section */}
-            {filteredOfflineUsers.length > 0 && (
-              <div>
-                <div className="flex items-center space-x-2 mb-3">
-                  <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
-                  <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
-                    Offline ({filteredOfflineUsers.length})
-                  </h3>
-                </div>
-                <div className="space-y-2">
-                  {filteredOfflineUsers.map((user, idx) => (
-                    <UserCard key={user._id || idx} user={user} isOnline={false} />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {!loadingUsers && usersList.length === 0 && (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">💬</span>
-                </div>
-                <p className="text-white/60">No users found</p>
-              </div>
-            )}
-          </div>
         </div>
 
-        {/* Center Chat Area */}
-        <div className="chat-area flex-1 bg-white/20 backdrop-blur-md rounded-2xl shadow-2xl flex flex-col glass-overlay">
-          {/* Chat Header */}
+        {/*
+          CHANGE 3: This is the Center Chat Area.
+          - flex-1: Makes this column grow to fill the remaining horizontal space.
+          - min-w-0: Prevents wide content (like long messages) from breaking the layout.
+          - flex flex-col: Again, essential for managing its internal header, content, and footer.
+        */}
+        <div className="flex-1 bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl flex flex-col min-w-0">
           {selectedUser ? (
-            <div className="p-6 border-b border-white/20">
-              <div className="flex items-center space-x-4">
+            <>
+              <div className="p-4 border-b border-slate-700/50 flex items-center gap-4 flex-shrink-0">
                 <div className="relative">
-                  <div className="w-12 h-12 bg-gradient-to-br from-violet-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                     {selectedUser.username.charAt(0).toUpperCase()}
                   </div>
-                  <span
-                    className={`absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-white ${
-                      onlineUsers.includes(selectedUser._id) ? "bg-green-400 online-pulse" : "bg-gray-400"
-                    }`}
-                  ></span>
+                  <span className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-slate-800 ${onlineUsers.includes(selectedUser._id) ? "bg-green-400" : "bg-slate-500"}`}></span>
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold text-white">{selectedUser.username}</h2>
-                  <p className={`text-sm ${onlineUsers.includes(selectedUser._id) ? "text-green-300" : "text-gray-400"}`}>
-                    {onlineUsers.includes(selectedUser._id) ? "Online" : "Last seen recently"}
+                  <h2 className="text-lg font-semibold text-white">{selectedUser.username}</h2>
+                  <p className={`text-sm ${onlineUsers.includes(selectedUser._id) ? "text-green-400" : "text-slate-400"}`}>
+                    {onlineUsers.includes(selectedUser._id) ? "Active now" : "Offline"}
                   </p>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div className="p-6 border-b border-white/20">
-              <h2 className="text-xl font-semibold text-white">Select a conversation</h2>
-              <p className="text-white/60">Choose from your contacts to start messaging</p>
-            </div>
-          )}
 
-          {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4 message-scroll">
-            {loadingMessages ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-              </div>
-            ) : !selectedUser ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center">
-                  <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-3xl">💬</span>
+              <div className="flex-1 overflow-y-auto p-6 space-y-4 message-scroll min-h-0">
+                {loadingMessages ? (
+                  <div className="flex justify-center items-center h-full"><Loader2 className="h-8 w-8 animate-spin text-blue-400" /></div>
+                ) : messages.length === 0 ? (
+                  <div className="text-center text-slate-400 flex flex-col items-center justify-center h-full">
+                    <MessageSquare className="h-12 w-12 mb-4 text-slate-500" />
+                    <h3 className="font-semibold text-slate-300">No messages yet</h3>
+                    <p>Be the first to send a message to {selectedUser.username}.</p>
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Welcome to Messages</h3>
-                  <p className="text-white/60">Select a conversation from the sidebar to start chatting</p>
-                </div>
-              </div>
-            ) : messages.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl">🚀</span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Start the conversation!</h3>
-                  <p className="text-white/60">Send your first message to {selectedUser.username}</p>
-                </div>
-              </div>
-            ) : (
-              messages.map((msg, idx) => {
-                const senderId = typeof msg.sender === "object" ? msg.sender._id : msg.sender;
-                const isCurrentUserSender = senderId === user._id;
-
-                return (
-                  <div
-                    key={msg._id || idx}
-                    className={`flex ${isCurrentUserSender ? "justify-end" : "justify-start"}`}
-                  >
-                    <div className={`flex flex-col ${isCurrentUserSender ? "items-end" : "items-start"} max-w-xs lg:max-w-md`}>
-                      <div
-                        className={`message-bubble px-4 py-3 rounded-2xl break-words ${
-                          isCurrentUserSender
-                            ? `bg-violet-600 text-white ${msg.isTemporary ? 'opacity-70' : ''}`
-                            : "bg-white/20 text-white"
-                        } shadow-lg`}
-                      >
-                        <p className="text-sm">{msg.content || ""}</p>
-                        {msg.isTemporary && (
-                          <div className="flex items-center mt-1">
-                            <div className="animate-spin rounded-full h-3 w-3 border-b border-white/70"></div>
-                            <span className="ml-2 text-xs opacity-70">Sending...</span>
+                ) : (
+                  messages.map((msg) => {
+                    const senderId = typeof msg.sender === "object" ? msg.sender._id : msg.sender;
+                    const isCurrentUserSender = senderId === user._id;
+                    return (
+                      <div key={msg._id || msg.tempMessageId} className={`flex items-end gap-2 ${isCurrentUserSender ? "justify-end" : "justify-start"}`}>
+                        <div className={`flex flex-col space-y-1 text-sm max-w-xs mx-2 order-2 ${isCurrentUserSender ? "items-end" : "items-start"}`}>
+                          <div className={`px-4 py-2 rounded-2xl inline-block ${isCurrentUserSender ? "bg-blue-600 text-white rounded-br-none" : "bg-slate-700 text-slate-200 rounded-bl-none"}`}>
+                            {msg.content}
+                            {msg.isTemporary && <span className="text-xs opacity-70 ml-2"> (sending...)</span>}
                           </div>
-                        )}
+                          <span className="text-xs text-slate-500">{formatMessageTime(msg.createdAt)}</span>
+                        </div>
                       </div>
-                      <span className="text-xs text-white/50 mt-1 px-2">
-                        {msg.createdAt ? formatMessageTime(msg.createdAt) : ""}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-            <div ref={bottomRef} />
-          </div>
-
-          {/* Message Input */}
-          {selectedUser && (
-            <div className="p-6 border-t border-white/20">
-              <div className="flex space-x-4">
-                <input
-                  type="text"
-                  placeholder={`Message ${selectedUser.username}...`}
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
-                  className="message-input flex-1 px-4 py-3 rounded-xl bg-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white/20 transition-all border border-white/20"
-                />
-                <button
-                  onClick={handleSendMessage}
-                  disabled={!newMessage.trim()}
-                  className="send-button px-6 py-3 bg-violet-600 hover:bg-violet-700 disabled:bg-gray-500 disabled:cursor-not-allowed rounded-xl transition-all font-medium text-white shadow-lg hover:shadow-xl disabled:shadow-none"
-                >
-                  Send
-                </button>
+                    );
+                  })
+                )}
+                <div ref={bottomRef} />
               </div>
+
+              <div className="p-4 border-t border-slate-700/50 flex-shrink-0">
+                <div className="flex items-center gap-4">
+                  <input
+                    type="text"
+                    placeholder="Type a message..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } }}
+                    className="flex-1 px-4 py-3 rounded-xl bg-slate-700/60 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all border border-slate-600"
+                  />
+                  <button
+                    onClick={handleSendMessage}
+                    disabled={!newMessage.trim()}
+                    className="p-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold transition-all duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
+                  >
+                    <SendHorizonal className="h-6 w-6" />
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-center text-slate-400 p-8">
+              <MessageSquare className="h-16 w-16 mb-6 text-slate-600" />
+              <h2 className="text-2xl font-bold text-white mb-2">Select a Conversation</h2>
+              <p>Choose a user from the list to start chatting.</p>
             </div>
           )}
         </div>
+
       </div>
     </div>
   );

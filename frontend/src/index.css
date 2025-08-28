@@ -1,44 +1,149 @@
 @import "tailwindcss";
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 
 body,
 html {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to bottom right, #D8B4FE, #C084FC, #818CF8);
-    background-attachment: fixed;
-    font-family: 'Arial', sans-serif;
-    color: #ffffff;
+    background: #0f172a; /* slate-900 */
+    color: #f8fafc; /* slate-50 */
     min-height: 100%;
-    
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-label,
-input,
-div
-button {
-    user-select: none;
-    cursor: default;
+/* Code font for technical content */
+code, pre {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 }
 
+/* Make headings, labels, inputs consistent */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    color: #f8fafc;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+p {
+    color: #cbd5e1; /* slate-300 */
+    line-height: 1.7;
+}
+
+/* Button and interactive elements */
+button, input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/* Scrollbar styling */
 ::-webkit-scrollbar {
-    width: 0.5rem;
-    
+    width: 0.75rem;
 }
+
 ::-webkit-scrollbar-track {
-    background: #D8B4FE;
-    background: linear-gradient(180deg, #001a00 0%, #000000 100%);
+    background: #1e293b; /* slate-800 */
+    border-radius: 0.5rem;
 }
+
 ::-webkit-scrollbar-thumb {
-    background-color: #D8B4FE;
-    border-radius: 10px;
-    border: 3px solid #D8B4FE;
+    background: #475569; /* slate-600 */
+    border-radius: 0.5rem;
+    border: 2px solid #1e293b; /* slate-800 */
+    transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b; /* slate-500 */
+}
+
+/* Selection styling */
+::selection {
+    background: #3b82f6; /* blue-500 */
+    color: #ffffff;
+}
+
+::-moz-selection {
+    background: #3b82f6; /* blue-500 */
+    color: #ffffff;
+}
+
+/* Focus styles for accessibility */
+*:focus {
+    outline: 2px solid #3b82f6; /* blue-500 */
+    outline-offset: 2px;
+}
+
+/* Smooth transitions for all elements */
+* {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Custom utility classes */
+.glass-effect {
+    background: rgba(30, 41, 59, 0.8); /* slate-800 with opacity */
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(71, 85, 105, 0.3); /* slate-600 with opacity */
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4); /* blue-500 to cyan-500 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.code-gradient {
+    background: linear-gradient(135deg, #1e293b, #334155); /* slate-800 to slate-700 */
+    border: 1px solid #475569; /* slate-600 */
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-out;
 }

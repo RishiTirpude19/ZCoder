@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft, Star, MessageSquare, Send, Loader2 } from "lucide-react";
 
 function AddSolutionReview() {
   const navigate = useNavigate();
@@ -44,64 +45,143 @@ function AddSolutionReview() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-[#D8B4FE] via-[#C084FC] to-[#818CF8] p-6">
-      <div className="max-w-3xl mx-auto">
-        <div className="mb-4">
-          <button
-            onClick={() => navigate(`/problem/${problemId}/solutions/${solutionId}`)}
-            className="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg font-semibold transition duration-200"
-          >
-            ⬅ Back to Solution
-          </button>
-        </div>
+  const renderStars = (rating) => {
+    return Array.from({ length: 5 }, (_, index) => (
+      <Star
+        key={index}
+        className={`h-6 w-6 cursor-pointer transition-colors ${
+          index < rating ? 'text-yellow-400 fill-current' : 'text-slate-400'
+        }`}
+        onClick={() => setFormData(prev => ({ ...prev, rating: index + 1 }))}
+      />
+    ));
+  };
 
-        <div className="bg-white/20 backdrop-blur-md p-8 rounded-2xl shadow-xl text-white">
-          <h1 className="text-3xl font-bold mb-6 text-center">Add a Review for the Solution</h1>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block mb-2 font-medium">Rating</label>
-              <select
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-cyan-600/10 to-blue-600/10"></div>
+        <div className="relative max-w-7xl mx-auto px-6 py-8">
+          <div className="flex items-center justify-between mb-6">
+            <button
+              onClick={() => navigate(`/problem/${problemId}/solutions/${solutionId}`)}
+              className="flex items-center gap-2 bg-slate-700/50 hover:bg-slate-700/70 text-slate-300 hover:text-white px-4 py-2 rounded-lg transition-all duration-200 border border-slate-600/50 hover:border-slate-600/70"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Solution
+            </button>
+            
+            <div className="text-center">
+              <div className="inline-flex items-center gap-3 bg-blue-600/20 border border-blue-500/30 rounded-full px-6 py-2 mb-4">
+                <MessageSquare className="h-5 w-5 text-blue-400" />
+                <span className="text-blue-400 font-medium">Add Review</span>
+              </div>
+              <h1 className="text-4xl font-bold text-white mb-2">
+                <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Solution Review</span>
+              </h1>
+              <p className="text-slate-400">Share your feedback and rating for this solution</p>
+            </div>
+            
+            <div className="flex items-center gap-2 bg-slate-700/50 px-3 py-2 rounded-lg border border-slate-600/50">
+              <Star className="h-4 w-4 text-yellow-400" />
+              <span className="text-slate-300 text-sm">Rate & Review</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-3xl mx-auto px-6 pb-12">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8">
+          
+          <form onSubmit={handleSubmit} className="space-y-8">
+            
+            {/* Rating Section */}
+            <div className="bg-slate-700/30 border border-slate-600/50 rounded-xl p-6">
+              <label className="block mb-4 font-semibold text-white text-lg">Rating</label>
+              <div className="flex items-center justify-center gap-2 mb-4">
+                {renderStars(formData.rating)}
+              </div>
+              <div className="text-center">
+                <p className="text-slate-300 text-sm">
+                  {formData.rating === 1 && 'Very Poor'}
+                  {formData.rating === 2 && 'Poor'}
+                  {formData.rating === 3 && 'Average'}
+                  {formData.rating === 4 && 'Good'}
+                  {formData.rating === 5 && 'Excellent'}
+                </p>
+              </div>
+              <input
+                type="hidden"
                 name="rating"
                 value={formData.rating}
                 onChange={handleChange}
                 required
-                className="w-full p-3 rounded-lg bg-white/90 text-black focus:outline-none focus:ring-2 focus:ring-violet-400"
-              >
-                <option value={1}>1 - Very Poor</option>
-                <option value={2}>2 - Poor</option>
-                <option value={3}>3 - Average</option>
-                <option value={4}>4 - Good</option>
-                <option value={5}>5 - Excellent</option>
-              </select>
+              />
             </div>
 
-            <div>
-              <label className="block mb-2 font-medium">Comment</label>
+            {/* Comment Section */}
+            <div className="bg-slate-700/30 border border-slate-600/50 rounded-xl p-6">
+              <label className="block mb-4 font-semibold text-white text-lg">Comment</label>
               <textarea
                 name="comment"
                 value={formData.comment}
                 onChange={handleChange}
-                rows={5}
+                rows={6}
                 required
-                placeholder="Write your review here..."
-                className="w-full p-4 rounded-lg bg-white/90 text-black focus:outline-none focus:ring-2 focus:ring-violet-400"
-              ></textarea>
+                placeholder="Write your detailed review here... Share what you liked, what could be improved, or any suggestions..."
+                className="w-full p-4 rounded-xl bg-slate-700/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-slate-700/70 transition-all border border-slate-600/50 resize-none"
+              />
             </div>
 
+            {/* Submit Button */}
             <div className="text-center">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full md:w-1/3 bg-violet-600 hover:bg-violet-700 text-white py-3 rounded-lg font-semibold transition disabled:opacity-50"
+                className="w-full md:w-1/2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:from-slate-600 disabled:to-slate-600 disabled:cursor-not-allowed text-white py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl disabled:shadow-none"
               >
-                {loading ? 'Submitting...' : 'Submit Review'}
+                {loading ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    Submitting Review...
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-5 w-5" />
+                    Submit Review
+                  </>
+                )}
               </button>
             </div>
 
-            {error && <div className="text-red-200 text-center">{error}</div>}
-            {success && <div className="text-green-200 text-center">{success}</div>}
+            {/* Messages */}
+            {error && (
+              <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 text-center">
+                <p className="text-red-200">{error}</p>
+              </div>
+            )}
+            {success && (
+              <div className="bg-green-500/20 border border-green-500/50 rounded-xl p-4 text-center">
+                <p className="text-green-200">{success}</p>
+              </div>
+            )}
           </form>
+
+          {/* Tips */}
+          <div className="mt-8 p-4 bg-slate-700/30 rounded-xl border border-slate-600/50">
+            <h4 className="text-sm font-semibold text-blue-300 mb-2 flex items-center gap-2">
+              <MessageSquare className="h-4 w-4" />
+              Review Tips
+            </h4>
+            <ul className="text-xs text-slate-400 space-y-1">
+              <li>• Be constructive and specific in your feedback</li>
+              <li>• Mention what you found helpful or innovative</li>
+              <li>• Suggest improvements if applicable</li>
+              <li>• Keep the tone respectful and professional</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import './App.css';
 import React, { Suspense, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { Loader2 } from "lucide-react";
+import { Loader2, Code2 } from "lucide-react";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setUser } from '../redux/userSlice';
@@ -40,6 +40,32 @@ import {SocketProvider} from "../context/socketContext.jsx"
 const LandingPage = React.lazy(() => import("../pages/LandingPage"));
 const Signin = React.lazy(() => import("../pages/Signin"));
 
+// Modern Loading Component
+const ModernLoader = () => (
+  <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center">
+    <div className="relative">
+      {/* Animated Logo */}
+      <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-4 rounded-2xl mb-6 animate-pulse">
+        <Code2 className="h-12 w-12 text-white" />
+      </div>
+      
+      {/* Loading Text */}
+      <h2 className="text-2xl font-bold text-white mb-4 text-center">ZCoder</h2>
+      
+      {/* Loading Spinner */}
+      <div className="flex justify-center">
+        <div className="relative">
+          <div className="w-12 h-12 border-4 border-slate-700 rounded-full"></div>
+          <div className="absolute top-0 left-0 w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </div>
+      
+      {/* Loading Message */}
+      <p className="text-slate-400 mt-6 text-center">Loading your coding journey...</p>
+    </div>
+  </div>
+);
+
 function App() {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
@@ -65,23 +91,13 @@ function App() {
   }, [dispatch]);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-      </div>
-    );
+    return <ModernLoader />;
   }
 
   return (
     <Router>
       
-      <Suspense
-        fallback={
-          <div className="flex justify-center items-center h-screen">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-          </div>
-        }
-      >
+      <Suspense fallback={<ModernLoader />}>
         <SocketProvider user={user}>
         <Routes>
           {/* Public routes */}
