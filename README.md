@@ -110,7 +110,7 @@ Start the application from the root directory
 ![App Screenshot](./assets/SignUp.png "App Screenshot")
 
 ### Dashboard:
-![App Screenshot](./assets/Dashboard.png "App Screenshot")
+![App Screenshot](./assets/BookMarked.png "App Screenshot")
 
 ### Add New Solution
 ![App Screenshot](./assets/AddSolutions.png "App Screenshot")
